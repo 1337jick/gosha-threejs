@@ -1,0 +1,3 @@
+mixin headline(options, label, animation)
+    - options = Object.assign({}, {tag: "h1", class: ""}, options)
+        #{options.tag}(class=`${options.class ? options.class : options.tag}` data-in=`${animation ? animation : "" }`)= label

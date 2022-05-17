@@ -1,0 +1,35 @@
+block variables
+doctype html
+html(lang=__.lang, class="no-js")
+    head
+        include head
+    body
+        include mixins/svgicon
+        include mixins/svgimage
+        include mixins/button
+        include mixins/headline
+        include mixins/image
+        include mixins/cursor
+        include overlays/about-overlay
+        include overlays/buy-overlay
+        include overlays/typeform-overlay
+        include overlays/typeform-accordion-mobile-overlay
+        include preloader
+        include about
+        include navigation
+        include loader
+        include header
+        include intro
+        include typeform
+        include typeform-success
+        include buy
+        include partners
+        include team
+        include faq
+        include news
+        include footer
+
+        block content
+            span no content provied
+
+        include scripts

@@ -1,0 +1,298 @@
+// basic
+
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='date'],
+select,
+textarea {
+    box-shadow: none;
+    appearance: none;
+    outline: none;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px !important;
+    margin: 0 !important;
+    border: 1px solid rgba($color-green, 0.2);
+    border-radius: $border-radius;
+    background-color: $color-white;
+    font-family: $font-family !important;
+    transition: border-color $link-transition;
+    color: $color-beer-black;
+
+    &::placeholder {
+        color: $color-beer-black;
+        opacity: 0.4;
+        transition: opacity $link-transition;
+        font-family: $font-family !important;
+    }
+
+    &:focus,
+    &:active {
+        border-color: $color-green;
+
+        &::placeholder {
+            opacity: 0;
+        }
+    }
+
+    &.is-error {
+        border-color: $color-red;
+
+        + .input__error {
+            display: block;
+        }
+    }
+}
+
+input[type='password'] {
+    font-size: 16px;
+    letter-spacing: 2px;
+
+    &::placeholder {
+        letter-spacing: 0;
+    }
+}
+
+input[type='date'] {
+    text-transform: uppercase;
+    text-align: left;
+    min-height: 50px;
+}
+
+select {
+    color: rgba($color-beer-black, 0.4);
+
+    option {
+        color: $color-beer-black;
+
+        &:disabled {
+            color: rgba($color-beer-black, 0.4);
+        }
+    }
+
+    &:valid {
+        color: $color-beer-black;
+    }
+}
+.input {
+    $block: &;
+
+    position: relative;
+
+    // custom styles
+    &__inner {
+        position: relative;
+
+        &__icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            font-size: 24px;
+            transform: translateY(-50%);
+            color: $color-green;
+            pointer-events: none;
+        }
+    }
+
+    &__label {
+        margin-bottom: 4px;
+
+        a {
+            color: $color-beer-black;
+            text-decoration: underline;
+            font-family: $font-family;
+        }
+    }
+
+    // password eye
+    .icon-hide,
+    .icon-eye {
+        position: absolute;
+        top: 50%;
+        font-size: 24px;
+        transform: translateY(-50%);
+        right: 16px;
+        cursor: pointer;
+    }
+
+    .icon-eye {
+        display: none;
+    }
+
+    &.is-show-password .icon-eye {
+        display: block;
+    }
+
+    &.is-show-password .icon-hide {
+        display: none;
+    }
+
+    &--checkbox {
+        flex-direction: row;
+        position: relative;
+
+        input {
+            position: absolute;
+            opacity: 0;
+
+            &.error,
+            &.is-error {
+                & + #{$block}__label {
+                    &:before {
+                        border-color: $color-red;
+                    }
+                }
+            }
+
+            &:checked + #{$block}__label {
+                &:before {
+                    background: $color-green;
+                    border-color: $color-green;
+                }
+
+                #{$block}__label__icon {
+                    opacity: 1;
+                }
+            }
+        }
+
+        &--small {
+            #{$block}__label {
+                padding-left: 30px;
+                &__inner {
+                    font-size: 13px;
+                }
+            }
+        }
+
+        #{$block}__label {
+            display: flex;
+            padding-left: 35px;
+            color: $color-beer-black;
+            font-size: 16px;
+
+            &:before {
+                content: '';
+                display: block;
+                width: 16px;
+                height: 16px;
+                border: 1px solid rgba($color-green, 0.2);
+                border-radius: 4px;
+                background: $color-white;
+                position: absolute;
+                top: 2px;
+                left: 0;
+                transition: all 200ms $ease-out-quad;
+            }
+
+            &__icon {
+                position: absolute;
+                top: 2px;
+                left: 0px;
+                font-size: 16px;
+                color: white;
+                cursor: pointer;
+                opacity: 0;
+                transition: opacity 200ms $ease-out-quad;
+            }
+        }
+    }
+
+    &--radio {
+        position: relative;
+
+        input {
+            position: absolute;
+            opacity: 0;
+
+            &.error,
+            &.is-error {
+                & + #{$block}__label {
+                    &:before {
+                        border-color: $color-red;
+                    }
+                }
+            }
+
+            &:checked + #{$block}__label {
+                &:before {
+                    border-color: $color-green;
+                }
+
+                &:after {
+                    opacity: 1;
+                }
+            }
+        }
+
+        #{$block}__label {
+            display: flex;
+            padding-left: 35px;
+            color: $color-beer-black;
+            font-size: 16px;
+
+            @include mq($until: tablet) {
+                padding-left: 24px;
+            }
+
+            &:before {
+                content: '';
+                display: block;
+                width: 20px;
+                height: 20px;
+                border: 1px solid rgba($color-green, 0.2);
+                border-radius: 100%;
+                background: $color-white;
+                position: absolute;
+                top: 2px;
+                left: 0;
+                transition: all 200ms $ease-out-quad;
+
+                @include mq($until: tablet) {
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+
+            &:after {
+                content: '';
+                display: block;
+                width: 12px;
+                height: 12px;
+                border-radius: 100%;
+                background: $color-green;
+                position: absolute;
+                top: 6px;
+                left: 4px;
+                transition: all 200ms $ease-out-quad;
+                opacity: 0;
+
+                @include mq($until: tablet) {
+                    width: 8px;
+                    height: 8px;
+                }
+            }
+        }
+    }
+
+    &__recaptcha {
+        & > div {
+            border: 1px solid transparent;
+            border-radius: 4px;
+            transition: border 200ms $ease-out-quad;
+        }
+
+        &.error,
+        &.is-error {
+            & > div {
+                border: 1px solid $color-red;
+            }
+        }
+    }
+
+    &__error {
+        display: none;
+        color: $color-red;
+    }
+}

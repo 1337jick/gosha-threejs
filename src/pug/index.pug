@@ -1,0 +1,403 @@
+extends /_includes/layout
+
+block title
+    title BALI PREDROP
+
+block content
+    -
+        const rawData = {
+            about: {
+                quote: {
+                    title: '"EVERY CULTURE IS BY DEFINITION A VITAL BRANCH OF OUR FAMILY TREE... AND, IF GIVEN THE OPPORTUNITY, A SOURCE OF INSPIRATION AND HOPE FOR THE FUTURE"',
+                    author: 'Wide Davis'
+                },
+                captions: [
+                    {
+                        title: 'Quantum Temple vision',
+                        text: 'Our vision is to honour lineages of culture keepers and ensure their knowledge, traditions and artworks are preserved and embedded in our future'
+                    },
+                    {
+                        title: 'Our Mission',
+                        text: 'Our mission is to empower the next generation of culture creators & foster the regenerative development of rural communities in underserved countries by providing them an equitable presence in Web 3.0'
+                    },
+                    {
+                        title: 'How we plan to do it',
+                        text: 'Developing the first decentralized repository of cultural heritage as a memory code of knowledge, mythology, songs, rituals, dances, crafts, and landscapes living on the blockchain - one NFT at a time',
+                        list: [
+                            'Curated content by prominent anthropologists and historians',
+                            'Tangible and intangible heritage NFT',
+                            'Rewarding cultural keepers on all transactions in perpetuity (45% share of revenue per transaction)',
+                            'Unlocking rare physical artifacts',
+                            'Unlocking transformative travel experiences',
+                            'Access to immersive physical and digital gatherings, live performances and ancient rituals',
+                        ],
+                    },
+                ],
+                images: [
+                    {
+                        src: 'assets/img/about-1.jpg',
+                        alt: 'photoshoot',
+                    },
+                    {
+                        src: 'assets/img/about-2.jpg',
+                        alt: 'photoshoot',
+                    },
+                    {
+                        src: 'assets/img/about-3.jpg',
+                        alt: 'photoshoot',
+                    },
+                    {
+                        src: 'assets/img/about-4.jpg',
+                        alt: 'photoshoot',
+                    },
+                ],
+            },
+
+            header: {
+                uptitle: 'web 3.0 platform for cultural preservation and experience',
+                title: 'Quantum temple',
+                image: {
+                    src: 'assets/img/bali.jpg',
+                    alt: 'bali poster'
+                },
+                video: {
+                    bg: 'assets/video/QTteaser_short.mp4',
+                    src: 'assets/video/QTteaser_full.mp4',
+                    src_mobile: 'assets/video/QTteaser_full_mob.mp4',
+                    caption: 'Join waitlist',
+                    caption_img: 'assets/img/small-egg.png',
+                },
+
+                info: {
+                    text: 'Bali Drop / June 2022',
+                },
+            },
+            buy: {
+                eggs: [
+                    {
+                        label: 'genesis egg',
+                        image: {
+                            src: 'assets/img/eggs/product/gold-def.png',
+                            src_hover: 'assets/img/eggs/product/gold-hov.png',
+                            alt: 'genesis'
+                        },
+                        price: '$ 30000',
+                        price_eth: '10.0 ETH',
+                        perks: [
+                            'Ticket to our Live Launch Event in New York',
+                            'First access to Tangible and Digital NFT',
+                            'First Member Access',
+                            'Early access to all future Drop Collections to come',
+                        ],
+                        button: {
+                            href: '#typeform?item_type=genesis',
+                            target: '',
+                            class: 'genesis',
+                            label: 'Join waitlist',
+                            labelSend: 'In waitlist',
+                        },
+                    },
+                    {
+                        label: 'quantum egg',
+                        image: {
+                            src: 'assets/img/eggs/product/silver-def.png',
+                            src_hover: 'assets/img/eggs/product/silver-hov.png',
+                            alt: 'genesis'
+                        },
+                        price: '$ 10000',
+                        price_eth: '3.0 ETH',
+                        perks: [
+                            'Early Access to a Quantum Temple Cultural Heritage NFT',
+                            'Digital NFT',
+                            'First Member Access',
+                            'Early access to all future Drop Collections to come',
+                        ],
+                        button: {
+                            href: '#typeform?item_type=quantum',
+                            target: '',
+                            class: 'quantum',
+                            label: 'Join waitlist',
+                            labelSend: 'In waitlist',
+                        },
+                    },
+                ],
+                typeform: {
+                    backButton: {
+                        label: "Back",
+                        href: "#"
+                    },
+                    submitButton: {
+                        label: "Send",
+                    },
+                    title: "Join waitlist",
+                    fields: {
+                        name: {
+                            label: "Name",
+                            placeholder: "Type your name",
+                            required: false
+                        },
+                        email: {
+                            label: "Email",
+                            placeholder: "Type your email",
+                            validLabel: "*",
+                            invalidLabel: "Incorrect email",
+                            required: true
+                        },
+                        select: {
+                            label: "What is your preferred payment?",
+                            mobileLabel: "What is your preferred payment?",
+                            options: [
+                                {
+                                    label: "Crypto wallet",
+                                    value: "crypto_wallet",
+                                    selected: true
+                                },
+                                {
+                                    label: "Debit card",
+                                    value: "debit_card",
+                                    selected: false
+                                },
+                            ]
+                        },
+                        multiselect: {
+                            label: "What Crypto Wallets do you have?",
+                            options: [
+                                {
+                                    label: "Pera Wallet",
+                                    value: "pera_wallet",
+                                    selected: false
+                                },
+                                {
+                                    label: "Phantom",
+                                    value: "phantom",
+                                    selected: false
+                                },
+                                {
+                                    label: "Coinbase",
+                                    value: "coinbase",
+                                    selected: false
+                                },
+                                {
+                                    label: "Avalanche",
+                                    value: "avalanche",
+                                    selected: false
+                                },
+                                {
+                                    label: "Metamask",
+                                    value: "metamask",
+                                    selected: false
+                                },
+                                {
+                                    label: "Trust",
+                                    value: "trust",
+                                    selected: false
+                                },
+                                {
+                                    label: "Other",
+                                    value: "other",
+                                    selected: false
+                                },
+                            ]
+                        }
+                    },
+                    success: {
+                        title: "Completed",
+                        subtitle: "Stay tuned for the next steps",
+                        events: [
+                            {
+                                label: "Sale of Cosmic Egg",
+                                date: "23 may 2022",
+                            },
+                            {
+                                label: "Collection Drop",
+                                date: "23 may 2022",
+                            },
+                            {
+                                label: "Marketplace Launch",
+                                date: "23 may 2022",
+                            },
+                        ],
+                        submitButton: {
+                            label: "Great"
+                        }
+                    }
+                },
+            },
+
+            intro: {
+                titles: [
+                    {
+                        uptitle: 'it all begins with the',
+                        title: 'cosmic egg',
+                    },
+
+                    {
+                        uptitle: null,
+                        title: 'a major symbol in creation myths',
+                    },
+
+                    {
+                        uptitle: null,
+                        title: 'seen as the soul of the primaeval waters out of which creation arose',
+                    },
+
+                    {
+                        uptitle: null,
+                        title: 'discover its unrevealed gift',
+                    },
+                ],
+                silver_egg: {
+                    src: 'assets/img/sequence/silver.png',
+                    alt: 'cosmig-egg',
+                },
+                caption: {
+                    uptitle: 'How the Cosmic Egg Works',
+
+                }
+            },
+            partners: {},
+            team: {
+                title: 'Our Team',
+                members: [
+                    {
+                        name: "Linda Adami",
+                        image: {
+                            src: 'assets/img/team/linda-adami.jpg',
+                            alt: 'team member'
+                        },
+                    },
+                    {
+                        name: "Carma Chan",
+                        image: {
+                            src: 'assets/img/team/carma-chan.jpg',
+                            alt: 'team member'
+                        },
+                    },
+                    {
+                        name: "Nicole Sigmaringo",
+                        image: {
+                            src: 'assets/img/team/nicole-sigmaringo.jpg',
+                            alt: 'team member'
+                        },
+                    },
+                    {
+                        name: "Pedro Robledo",
+                        image: {
+                            src: 'assets/img/team/pedro-robledo.jpg',
+                            alt: 'team member'
+                        },
+                    },
+                    {
+                        name: "Professor Vibeke Sorensen",
+                        image: {
+                            src: 'assets/img/team/professor-vibeke-sorensen.jpg',
+                            alt: 'team member'
+                        },
+                    },
+                    {
+                        name: "Eva Cavalli",
+                        image: {
+                            src: 'assets/img/team/eva-cavalli.jpg',
+                            alt: 'team member'
+                        },
+                    },
+                    {
+                        name: "Naseem Sayani",
+                        image: {
+                            src: 'assets/img/team/naseem-sayani.jpg',
+                            alt: 'team member'
+                        },
+                    },
+                    {
+                        name: "Dr Mario Hardy",
+                        image: {
+                            src: 'assets/img/team/dr-mario-hardy.jpg',
+                            alt: 'team member'
+                        },
+                    },
+                    {
+                        name: "Professor Steve Lansing",
+                        image: {
+                            src: 'assets/img/team/professor-steve-lansing.jpg',
+                            alt: 'team member'
+                        },
+                        icon: 'code-4'
+                    },
+                ]
+            },
+            faq: {
+                title: 'Have a question?',
+                questions: [
+                    {
+                        title: 'What is a Cosmic Egg?',
+                        answer: 'A Cosmic Egg is a major symbol in creation myths, seen as the soul of the primeval waters out of which creation arose, and discover its unrevealed gift.<br/><br/> - In the Quantum Temple, a Cosmic Egg is a hatch that contains your unique, surprise NFT.<br/>- Once Quantum Temple officially launches, your Cosmic Egg will hatch to reveal your NFT.<br/> - Quantum Temple’s NFTs go beyond just a jpeg — they include:<br/> - A digital artwork, visible on your wallet or Quantum Temple profile<br/>- A physical artwork capturing the unique heritage of the Balinese culture<br/>- A ticket to a unique IRL experience<br/><br/>Join our whitelist [link to whitelist reg page] to be the first one to know when you can purchase your Cosmic Egg.'
+                    },
+                    {
+                        title: 'Why should I buy one?',
+                        answer: 'Purchasing your Genesis Egg gives you exclusive access to:<br/> <br/> - Limited ticket to the Quantum Temple in-person event in NYC, US [Date TBD]<br/> - A Genta — an original, handcrafted ceremonial bell from the Balinese Buddhist tradition<br/> - A digital video NFT capturing unique moments of the Balinese heritage and culture<br/> - All future Quantum Temple NFT drops<br/> <br/> Most importantly, 45% of gross sales from all Genesis Egg transactions will be devoted to the Balinese local communities of artisans and craftsmen partnering with Quantum Temple.<br/> <br/> As that NFTs appreciate in value — due to their uniqueness and multi-dimensional properties — and get on the secondary market, 5% of all future transactions will be automatically distributed to the original artisans and communities.<br/> <br/> Buying a Cosmic Egg once means supporting the Balinese community, their traditions and heritage, forever.<br/> <br/> Join our whitelist [link to whitelist reg page] to be the first one to know when you can purchase your Cosmic Egg.'
+                    },
+                    {
+                        title: 'How do I buy a Cosmic Egg?',
+                        answer: '1. Sign up to join our whitelist. [link to whitelist reg page]<br/> 2. Join our Discord community [link to Discord invite]<br/> 3. Follow Quantum Temple on <a href="https://mobile.twitter.com/quantum_temple" target="_blank">Twitter</a> and <a href="https://www.instagram.com/quantumtemple.nft/" target="_blank">Instagram</a> <br/> 4. Sit back until Cosmic Eggs sales open on [add date] [add to your calendar]<br/> 5. Once sales open, just select your Cosmic Egg:<br/> 1. Genesis Egg for USDT $1,000<br/> 2. Quantum Egg for USDT $500<br/> 6. You can purchase your Cosmic Egg with these payment methods:<br/> 1. We accept credit card payments<br/> 2. And also $USDC and $USDT stablecoin<br/> <br/> If you want to pay with crypto, you can do so by <a href="https://support.perawallet.app/en/article/create-a-new-algorand-account-on-pera-wallet-1ehbj11/" target="_blank">creating your PERA wallet</a><br/> <br/> <br/> → Get your Cosmic Egg**'
+                    },
+                    {
+                        title: 'What payment methods are accepted?',
+                        answer: 'You can buy your Cosmic Egg with these payment methods:<br/> <br/> 1. We accept credit card payments<br/> 2. And also $USDC and $USDT stablecoin<br/> <br/> If you want to pay with crypto, you can do so by <a href="https://support.perawallet.app/en/article/create-a-new-algorand-account-on-pera-wallet-1ehbj11/" target="_blank">creating your PERA wallet</a><br/> <br/> Join our whitelist [link to whitelist reg page] to be the first one to know when you can purchase your Cosmic Egg.'
+                    },
+                ]
+            },
+            news: {
+                title: 'Receive news about future drop',
+                button: {
+                    label: 'Join the wait list',
+                    href: '#typeform',
+                    target: ''
+                }
+            },
+            footer: {
+                title: '©quantum temple',
+                links: {
+                    contact: {
+                        label: '',
+                        href: ''
+                    },
+                    termsAndConditions: {
+                        label: 'Terms and Conditions',
+                        href: '/'
+                    },
+                    privacyPolicy: {
+                        label: 'Privacy policy',
+                        href: '/'
+                    },
+                    about: {
+                        label: 'About project',
+                        href: '#about'
+                    },
+                    twitter: "https://mobile.twitter.com/quantum_temple",
+                    instagram: "https://www.instagram.com/quantumtemple.nft/",
+                    youtube: "/",
+                    discord: "/"
+                }
+            }
+        }
+    .page
+        +navigation()
+
+        //- modals
+        +cursor()
+        +about-overlay(rawData.about)
+        +buy-overlay(rawData.buy)
+        +typeform-overlay(rawData.buy.typeform)
+        +typeform-accordion-mobile-overlay(rawData.buy.typeform.fields.select)
+        +preloader()
+
+        //- scroll-content starts here
+        #view-main
+
+            +header(rawData.header)
+            +intro(rawData.intro)
+            +team(rawData.team)
+            +partners(rawData.partners)
+            +faq(rawData.faq)
+            +news(rawData.news)
+            +footer(rawData.footer)

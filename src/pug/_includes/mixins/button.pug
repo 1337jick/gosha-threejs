@@ -1,0 +1,4 @@
+mixin button(options, data)
+  - options = Object.assign({}, {class: "", size: "default", style: "black"}, options)
+  - data = Object.assign({}, {href: "test.html", target: "_blank", label: "Lorem Ipsum"}, data)
+      a(class=`button button--size--${options.size} button--style--${options.style} ${options.class}` href=data.href target=data.target)= data.label

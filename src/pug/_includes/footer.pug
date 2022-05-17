@@ -1,0 +1,11 @@
+mixin footer(data)
+    footer.footer
+        .container
+            .footer__head
+                +headline({tag: "h3", class: "h3 footer__head__title white"}, data.title)
+
+            .footer__socials
+                a.footer__socials__item(href=data.links.twitter target="_blank")
+                    +svgicon('twitter', false)
+                a.footer__socials__item(href=data.links.instagram target="_blank")
+                    +svgicon('instagram', false)

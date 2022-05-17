@@ -1,0 +1,58 @@
+mixin header(data)
+    header.header(data-component='{"component": "header"}')
+        //- .header__top.video-player.js-header__top.js-cursor__trigger.js-video-player(data-component='{"component": "video-player"}' data-video=data.video)
+        .header__top.video-player.js-header__top
+
+            .header__bg
+                //- bg image poster
+                .header__bg__image.video-player__bg-img
+                    +image(data.image.src, data.image.alt)
+                //- bg video
+                .header__bg__video-wrapper.video-player__bg-vid
+
+                    video.js-video-player__bg(autoplay='true' muted='true' playsinline='' loop='true' preload='auto' src=data.video.bg)
+
+
+                //- video which will be loaded
+                .video-player__video-wrapper
+                    video.video-player__video.js-video-player__video(preload='auto')
+                    //- buttons
+                    div.video-player__controls
+                        //- return
+                        div.video-player__controls__return.js-video-player__return.js-video-player__button
+                            div.video-player__controls__return-button
+                                +svgicon('return', true)
+
+
+                        //- play
+                        div.video-player__controls__duration.js-video-player__play.js-video-player__button
+                            div.video-player__controls__play
+                                +svgicon('play', true)
+                            div.video-player__controls__pause
+                                +svgicon('pause', true)
+                            div.video-player__controls__time
+                                div.video-player__controls__time--current
+                                    span.js-video-player__progress 00:00
+                                div.video-player__controls__time--total
+                                    span.js-video-player__duration / 00:00
+                        //- mute
+                        div.video-player__controls__mute.js-video-player__mute.js-video-player__button
+                            div.video-player__controls__mute-on
+                                +svgicon('mute', true)
+                            div.video-player__controls__mute-off
+                                +svgicon('unmute', true)
+
+                    //- buy
+                    a(class=`button button--size--default button--style--white video-player__video__button js-video-player__buy js-video-player__button` href="#buy" target="_top")
+                        +image(data.video.caption_img, 'cosmic-egg')
+                        =data.video.caption
+
+
+            .header__caption(data-component='{"component": "inview"}')
+                .header__uptitle.copy.white.js-header__uptitle(data-in="subtitle-in")= data.uptitle
+
+                +headline({tag: "h1", class: "h1 header__title white"}, data.title, 'title-in')
+
+
+        .header__bottom
+            .header__bottom__caption.js-header__bottom-element.copy.white.is-hidden= data.info.text

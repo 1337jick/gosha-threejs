@@ -1,0 +1,54 @@
+extends /_includes/layout
+
+block title
+	title Breakdown
+
+block content
+	.module.module--space-small
+		.container
+			pre.module-info Typography
+
+			+headline({tag: "h1", class: "h1 breakdown__title"}, 'Headline 1')
+			+headline({tag: "h2"}, 'Headline 2')
+			+headline({tag: "h3", class: "h3 breakdown__title"}, 'Headline 3')
+			br
+		
+			.copy.copy-bold Copy Bold
+			.copy Copy
+			br
+
+		.container(style="background: #F7E2BB; padding-bottom: 60px;")
+			pre.module-info Buttons
+			br
+			+button({style: "black"}, {href: 'button.html', label: "Black Button"})
+			br
+			br
+			+button({style: "white"}, {href: 'button.html', label: "White Button"})
+
+
+		.container(style="background: #000; padding-bottom: 60px;")
+			pre.module-info Icons
+			br
+			a.navigation__logo
+				+svgicon('logo', false)
+			a.footer__socials__item
+				+svgicon('twitter', false)
+			a.footer__socials__item
+				+svgicon('instagram', false)
+			a.footer__socials__item
+				+svgicon('youtube', false)
+			a.footer__socials__item
+				+svgicon('discord', false)
+
+
+	.module.bg-white.module--space-default
+		.container.container--large
+			pre.module-info Containers
+			br
+			| width container (12 / 12 cols)
+		.container
+			| default container (10 / 12 cols)
+		.container.container--medium
+			| medium container (8 / 12 cols)
+		.container.container--small
+			| small container (6 / 12 cols)

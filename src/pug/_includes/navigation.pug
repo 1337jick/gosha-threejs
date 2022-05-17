@@ -1,0 +1,12 @@
+mixin navigation(data)
+    nav.navigation.js-navigation.is-hidden(data-component='{"component": "navigation"}' data-in="navigation")
+        a.navigation__logo
+            +svgicon('logo', false)
+        .navigation__links
+            .navigation__links__item
+                a.js-overlay__link(href="#about")
+                    span.copy.navigation__links__item-text.is-desktop About Project
+                    span.copy.navigation__links__item-text.is-mobile About
+            .navigation__links__button
+                +button({class:"js-overlay__link", style: "white"}, {href: '#buy', label: "Get Access"})
+

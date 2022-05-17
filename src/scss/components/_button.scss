@@ -1,0 +1,56 @@
+.button {
+    $block: &;
+
+    display: inline-block;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    border-radius: $border-radius;
+    position: relative;
+    text-transform: uppercase;
+    line-height: 1;
+    font-weight: $font-weight-extrabold;
+    transition: $transition-link;
+
+    &.is-disabled {
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    & > .preloader {
+        @include center('vertical');
+        right: 20px;
+    }
+
+    &--style {
+        &--white {
+            background-color: $color-white;
+            color: black;
+
+            .no-touch &:hover {
+                background-color: darken($color-white, 10%);
+            }
+        }
+        &--black {
+            background-color: $color-black;
+            color: white;
+
+            .no-touch &:hover {
+                background-color: lighten($color-black, 10%);
+            }
+        }
+    }
+
+    &--size {
+        &--default {
+            font-size: $font-size-base;
+            padding: 22px 20px;
+        }
+    }
+
+    &__inner {
+        display: flex;
+        align-items: center;
+    }
+}

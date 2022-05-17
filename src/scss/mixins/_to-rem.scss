@@ -1,0 +1,7 @@
+@use 'sass:math';
+
+// convert px values to rem
+@function toRem($pxValue, $base: 16) {
+    $remValue: math.div($pxValue, $base) + rem;
+    @return $remValue;
+}

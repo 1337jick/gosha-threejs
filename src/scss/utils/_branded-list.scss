@@ -1,0 +1,23 @@
+@mixin branded-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    li {
+        padding-left: 3em;
+        margin-bottom: toRem(30);
+        position: relative;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+        &::before {
+            content: '';
+            position: absolute;
+            left: 1.3em;
+            top: 1em;
+            width: 10px;
+            height: 1px;
+            background-color: $color-grey-dark;
+        }
+    }
+}

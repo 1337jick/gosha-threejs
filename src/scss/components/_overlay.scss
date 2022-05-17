@@ -1,0 +1,106 @@
+.overlay {
+    $block: &;
+
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: toRem(60) 0;
+    z-index: $z-index-overlay;
+
+    transform: translateY(100%);
+    pointer-events: none;
+    transition: $transition-link-quad;
+
+    &.is-visible {
+        pointer-events: all;
+        transform: none;
+    }
+
+    & > .preloader {
+        @include center();
+    }
+
+    &__content {
+        background-color: $color-black;
+        width: 100%;
+        box-shadow: $shadow-standard;
+        position: relative;
+        height: calc(100vh - 60px);
+        overflow: scroll;
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+
+        &--default {
+            max-width: 900px;
+        }
+        &--full-hd {
+            max-width: 1920px;
+        }
+
+        &--transparent {
+            box-shadow: none;
+            background-color: transparent;
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    &__close {
+        transition: $transition-link;
+
+        position: absolute;
+        width: 100%;
+        text-align: right;
+        top: 0;
+        right: 0;
+        padding: 1em;
+        font-size: 16px;
+        cursor: pointer;
+        z-index: 10;
+        opacity: 0;
+        height: 3.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        @include mq($until: mobile) {
+            justify-content: center;
+            text-align: center;
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+
+        svg {
+            pointer-events: none;
+        }
+
+        .is-visible & {
+            opacity: 1;
+            transition-delay: 0.7s;
+        }
+
+        .no-touch &:hover {
+            color: darken($color-white, 10%);
+        }
+    }
+}
+
+@keyframes hideOverlayContent {
+    from {
+        opacity: 1;
+        transform: none;
+    }
+    to {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+}
