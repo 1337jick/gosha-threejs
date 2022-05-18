@@ -55,23 +55,12 @@ $z-index-page-dimmer: 100;
 $z-index-overlay: 120;
 
 // Colors
-$color-primary: #3b90ce;
-
-// used
+$color-primary: #EDFF80;
+$color-white: #ffffff;
 $color-black: #000;
 $color-silver: #c7cdd1;
-$color-gold: #fde3b7;
-$color-white: #fff;
-$color-grey-dark: #8b9094;
-$color-grey-darker: #292f32;
-$color-grey-medium: #a8a8a8;
-$color-brown: #f7e2bb;
-$color-alert: #bf9090;
 
-// not used
-$color-grey-light: #e5e5e5;
-$color-grey-lighter: #f3f3f3;
-$color-almost-white: #f0f2f4;
+
 
 // Easings
 $linear: cubic-bezier(0.25, 0.25, 0.75, 0.75);
