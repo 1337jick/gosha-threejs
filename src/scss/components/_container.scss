@@ -8,16 +8,14 @@
         padding: 0 $page-padding-big;
 
         // Defaults to the "default" width if no specific size is selected
-        // max-width: map-get($map: $container-widths, $key: default) + ($page-padding-big * 2);
+        max-width: map-get($map: $container-widths, $key: default) + ($page-padding-big * 2);
 
         // Define container sizes
-        // @each $name, $width in $container-widths {
-        // 	&--#{$name} {
-        // 		max-width: $width + $page-padding-big;
-        // 	}
-        // }
-
-        // "Full" type for containers that should have the side padding but otherwise should always stretch to the width of the parent element
+        @each $name, $width in $container-widths {
+        	&--#{$name} {
+        		max-width: $width + $page-padding-big;
+        	}
+        }
     }
 
     &--no-padding-until-tablet {
