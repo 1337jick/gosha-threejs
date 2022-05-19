@@ -1,53 +1,36 @@
 @font-face {
-    font-family: 'NB Architekt Std';
-    src: url('../fonts/NBArchitektStd-Bold.woff2') format('woff2'),
-        url('x/NBArchitektStd-Bold.woff') format('woff');
-    font-weight: bold;
+    font-family: 'Libertad Mono';
+    src: url('../fonts/LibertadMono-Medium.woff2') format('woff2'),
+        url('../fonts/LibertadMono-Medium.woff') format('woff');
+    font-weight: 500;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'NB Architekt Std';
-    src: url('../fonts/NBArchitektStd-Regular.woff2') format('woff2'),
-        url('../fonts/NBArchitektStd-Regular.woff') format('woff');
+    font-family: 'Cygnito Mono';
+    src: url('../fonts/CygnitoMono.woff2') format('woff2'),
+        url('../fonts/CygnitoMono.woff') format('woff');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'NB Architekt Std';
-    src: url('../fonts/NBArchitektStd-Light.woff2') format('woff2'),
-        url('../fonts/NBArchitektStd-Light.woff') format('woff');
-    font-weight: 300;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'NB Architekt Std Neue';
-    src: url('../fonts/NBArchitektStdNeue-Bold.woff2') format('woff2'),
-        url('../fonts/NBArchitektStdNeue-Bold.woff') format('woff');
+    font-family: 'Libertad Mono';
+    src: url('../fonts/LibertadMono-Bold.woff2') format('woff2'),
+        url('../fonts/LibertadMono-Bold.woff') format('woff');
     font-weight: bold;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'NB Architekt Std Neue';
-    src: url('../fonts/NBArchitektStdNeue-Regular.woff2') format('woff2'),
-        url('../fonts/NBArchitektStdNeue-Regular.woff') format('woff');
+    font-family: 'Libertad Mono';
+    src: url('../fonts/LibertadMono-Regular.woff2') format('woff2'),
+        url('../fonts/LibertadMono-Regular.woff') format('woff');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
 }
 
-@font-face {
-    font-family: 'NB Architekt Std Neue';
-    src: url('../fonts/NBArchitektStdNeue-Light.woff2') format('woff2'),
-        url('../fonts/NBArchitektStdNeue-Light.woff') format('woff');
-    font-weight: 300;
-    font-style: normal;
-    font-display: swap;
-}

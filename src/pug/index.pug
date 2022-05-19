@@ -8,29 +8,12 @@ block content
         const rawData = {
             
             header: {
-                uptitle: 'web 3.0 platform for cultural preservation and experience',
-                title: 'Quantum temple',
-                image: {
-                    src: 'assets/img/bali.jpg',
-                    alt: 'bali poster'
-                },
-                video: {
-                    bg: 'assets/video/QTteaser_short.mp4',
-                    src: 'assets/video/QTteaser_full.mp4',
-                    src_mobile: 'assets/video/QTteaser_full_mob.mp4',
-                    caption: 'Join waitlist',
-                    caption_img: 'assets/img/small-egg.png',
-                },
-
-                info: {
-                    text: 'Bali Drop / June 2022',
-                },
+                title: 'Etheric boilerplate',
             },
         }
     .page
         +navigation()
         //- scroll-content starts here
         #view-main
-            +headline({tag: "h1", class: "h1 center"}, 'ETHERIC BOILERPLATE')
-            //- +header(rawData.header)
+            +header(rawData.header)
             //- +footer()

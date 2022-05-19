@@ -34,6 +34,7 @@ a {
 
 @mixin headline-styles {
     font-weight: $font-weight-light;
+    font-family: $font-family-headline;
     text-transform: uppercase;
     margin: 0;
 }

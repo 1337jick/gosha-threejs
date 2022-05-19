@@ -303,7 +303,7 @@ Example use:
 
 All svg icons should be stored in `./src/icons/`.
 
-Make sure the shapes do not use a `fill` property, so that you can dynamically change the color in css.
+Make sure the shapes do not use a `fill` and `stroke` properties, so that you can dynamically change the color in css.
 
 To directly compile svg spritesheet use command:
 

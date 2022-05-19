@@ -1,19 +1,4 @@
 mixin header(data)
-    header.header(data-component='{"component": "header"}')
-        //- .header__top.video-player.js-header__top.js-cursor__trigger.js-video-player(data-component='{"component": "video-player"}' data-video=data.video)
-        .header__top.video-player.js-header__top
-
-            .header__bg
-                //- bg image poster
-                .header__bg__image.video-player__bg-img
-                    +image(data.image.src, data.image.alt)
-                //- bg video
-                .header__bg__video-wrapper.video-player__bg-vid
-                    video.js-video-player__bg(autoplay='true' muted='true' playsinline='' loop='true' preload='auto' src=data.video.bg)
-
-
-
-            .header__caption(data-component='{"component": "inview"}')
-                .header__uptitle.copy.white.js-header__uptitle(data-in="subtitle-in")= data.uptitle
-
-                +headline({tag: "h1", class: "h1 header__title white"}, data.title, 'title-in')
+    header.header
+        .header__caption
+            +headline({tag: "h1", class: "h1 header__title black"}, data.title, 'title-in')
