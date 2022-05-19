@@ -7,6 +7,4 @@
 // import 'element-closest/browser'; // enable ".closest" on IE11
 // import svg4everybody from 'svg4everybody'; // enable svg symbols on IE11
 
-import './lazyloading';
-
 // svg4everybody(); // enable svg symbols on IE11
