@@ -355,26 +355,7 @@ To use sprites in pug:
 .my-sprite.-NAME
 ```
 
-### JS
-
-All javascript proceeds with [webpackConfig](https://webpackConfig.js.org/) + [Babel](https://babeljs.io/).
-
-Webpack config localed in `./webpackConfig.{NODE_ENV}.js`.
-
-Babel config located in `./babel.config.js`.
-
-Entrypoint, by default: `./src/js/app.js`.
-
-To directly compile js use command:
-
-```
-gulp js
-```
-
-[Read webpackConfig docs](https://webpackConfig.js.org/concepts/).
-
-[Read Babel docs](https://babeljs.io/docs/en/).
-
+### Scripts
 
 The scripts system is based on vanilla javascript and vue.js. By default vue.js is disabled and has to be enabled by uncommenting all the lines that are anotated with "Uncomment to enable Vue.js components"
 
@@ -439,6 +420,11 @@ function initalize () {
 }
 ```
 
+### Enable Vue.js components
+
+To enable Vue.js components in your project search for the following string in your `scripts` directory: "Uncomment to enable Vue.js components".
+Then uncomment all three occurences of the code next to that string.
+
 #### Models
 
 Models serve as a logic layer for components, which means you can reuse the same logic no mather what the component is (components serve as a "view" layer and models as "logic" layer).
@@ -457,6 +443,28 @@ function getArticles () {
 
 Models should be used to store the logic and make keep the component code clean even if the logic is not planned to be reused by other components.
 
+
+### Store
+
+Store provides a way to share data between various components and models in the system. The store is not included in the final script package until at least one script imports it to it's scope (`import store from Store`).
+
+The store system is based on the `vuex` package. Check vuex documentation for more details.
+
+
+### Directory aliases
+
+System provides directory aliases for `import` statements in order to simplify the import structure.
+
+I.e. you can use `import { fetchAndSortArticles } from 'Models/articles';` instead of `import { fetchAndSortArticles } from '/templates/src/assets/scripts/models/articles';`
+
+| Alias | Path |
+| --- | --- |
+| Scripts | `templates/src/assets/scripts`|
+| Models | `templates/src/assets/scripts/models`|
+| Components | `templates/src/assets/scripts/components`|
+| Bootstrap | `templates/src/assets/scripts/bootstrap`|
+| Store | `templates/src/assets/scripts/store`|
+| InlineIcons | `templates/src/assets/icons/inline`|
 
 #### Global debounced events
 
