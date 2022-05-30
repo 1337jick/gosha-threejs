@@ -1,6 +1,6 @@
-## Quick start
+# Quick start
 
-### Setup
+## Setup
 
 Make sure you have Node v.11 or above installed.
 
@@ -11,7 +11,7 @@ npm install
 Copy `.env.default` to `.env` if it exists.
 
 
-### Production
+## Production
 
 To build an optimized version of the application in `/dist/` use command:
 
@@ -25,7 +25,7 @@ or just use shortcut:
 gulp
 ```
 
-### Development
+## Development
 
 Deploy the app and start the middleware server with live reload:
 
@@ -33,7 +33,7 @@ Deploy the app and start the middleware server with live reload:
 gulp serve
 ```
 
-### Basic configuration
+## Basic configuration
 
 Build settings located in `config.development.js` and `config.production.js`.
 
@@ -43,7 +43,7 @@ The locale can be switched using the `pug.locale` parameter in build config and 
 
 The configuration files can be switched using the `NODE_ENV` environment variable.
 
-### File structure
+## File structure
 
 ```bash
 ├── /dist/                      # Production directory (minified, optimized and compiled files)
@@ -69,7 +69,7 @@ The configuration files can be switched using the `NODE_ENV` environment variabl
 ├── package.json                # Project meta and dependencies
 ```
 
-### Gulp tasks
+## Gulp tasks
 
 `gulp serve` deploy the app and start middleware server with live reload
 
@@ -97,9 +97,9 @@ The configuration files can be switched using the `NODE_ENV` environment variabl
 
 `gulp clean:dist` clean directory `/dist/`
 
-## Advanced configuration
+# Advanced configuration
 
-### HTML
+## HTML
 
 Boilerplate use [Pug](https://pugjs.org/) as an HTML Preprocessor.
 
@@ -125,7 +125,7 @@ The following constants are available in each template:
 | `LOCALE` | `string` | current locale |
 | `$` | `string` | current page key (only in templates) |
 
-#### Locales
+## Locales
 
 All locales should be stored in `./src/locales/{LANG}/*.json`.
 
@@ -133,116 +133,8 @@ Builder merges all `.json` files from current locale directory into one object, 
 
 The locale can be switched using `locale` parameter in build config and can override with `FORCE_LOCALE` environment variable.
 
-#### Fetch
 
-Builder can receive additional dynamic data to generate pages using `fetch`. This implements a simple Jamstack architecture and "Static Site Generation".
-
-Callable function can be async.
-
-The received data will be available in `$$` constant in each pug template.
-
-**Example**:
-
-```javascript
-const axios = require('axios');
-
-const fetchBackendData = async(locals, config) => {
-    return new Promise((resolve, reject) => {
-        axios.get(`https://api.example.com/posts/`).then((response) => {
-            resolve(response.data);
-        });
-    })
-};
-
-module.exports = {
-    // ..... //
-    pug: {
-        src: ['./src/pug/**/*.pug', '!./src/pug/_includes/**/*'],
-        dest: "./tmp/",
-        locale: "en",
-        ext: false,
-        fetch: fetchBackendData
-    }
-    // .... //
-}
-```
-
-#### Templates
-
-The builder can dynamically generate pages based on any object (locales, fetched data, array, etc..).
-
-| variable | type | description |
-| :--- | :---: | :--- |
-| `src` | `string` | template path |
-| `target` | `any` | iterable target |
-| `key` | `string` | iterable target key (optional) |
-| `dirname` | `string` | destination directory (`$` - replaced with a current key) |
-| `basename` | `string` | destination filename (`$` - replaced with a current key) |
-
-**Examples**:
-
-```javascript
-// Generate posts from array
-templates: [
-    {
-        src: "./src/pug/_includes/templates/post.pug",
-        target: [
-            {
-                "id": 1,
-                "title": "Post #1"
-            },
-            {
-                "id": 2,
-                "title": "Post #2"
-            }
-        ],
-        key: "id",
-        dirname: "posts/$",
-        basename: "index"
-    }
-]
-```
-
-```javascript
-// Generate posts from locales
-templates: [
-    {
-        src: "./src/pug/_includes/templates/post.pug",
-        target: "__.posts",
-        key: "id",
-        dirname: "posts/$",
-        basename: "index"
-    }
-]
-```
-
-```javascript
-// Generate posts from fetched data
-fetch: fetchBackendData,
-templates: [
-    {
-        src: "./src/pug/_includes/templates/post.pug",
-        target: "$$.posts",
-        key: "id",
-        dirname: "posts/$",
-        basename: "index"
-    }
-]
-```
-
-```javascript
-// Generate posts from array
-templates: [
-    {
-        src: "./src/pug/_includes/templates/post.pug",
-        target: [1,3,4,5],
-        dirname: "tutorials",
-        basename: "$"
-    }
-]
-```
-
-### Styles
+###Styles
 
 Boilerplate use [Sass](https://sass-lang.com/) as an CSS Preprocessor.
 
@@ -265,7 +157,7 @@ The following options are available in the build configuration:
 
 Styles are written in .scss file format.
 
-#### Media Queries
+## Media Queries
 
 A `sass-mq` library is used to generate media query mixins. The breakpoints are defined in `_variables.scss`, in the `$mq-breakpoints` object. Media queries use mobile-first approach. Check [sass-mq documentation](https://github.com/sass-mq/sass-mq) for more info.
 
@@ -282,7 +174,7 @@ Example use:
 }
 ```
 
-#### Grid
+## Grid
 
 Use [CSS Grid](https://css-tricks.com/snippets/css/complete-guide-grid/) for your grid needs. There is nothing special about the way we use it except Jumpstart provides to predefined variables called `$gutter-small` and `$gutter-big`. Use these to keep the grid gaps consistent throughout the modules.
 
@@ -299,7 +191,7 @@ Example use:
 }
 ```
 
-### SVG Sprites
+## SVG Sprites
 
 All svg icons should be stored in `./src/icons/`.
 
@@ -327,7 +219,7 @@ To use icon in Pug use mixin:
 +svgicon("ICON_NAME", insertinline = true | false)
 ```
 
-### Sprites
+## Sprites
 
 All sprites should be stored in `./src/sprites/`. `@2x (retina)` icons also supported.
 
@@ -355,7 +247,7 @@ To use sprites in pug:
 .my-sprite.-NAME
 ```
 
-### Scripts
+## Scripts
 
 The scripts system is based on vanilla javascript and vue.js. By default vue.js is disabled and has to be enabled by uncommenting all the lines that are anotated with "Uncomment to enable Vue.js components"
 
@@ -374,7 +266,7 @@ Dev talks video: **Scripts - Introduction**
 
 Example `load-content.js` file from the video: [load-content.js](https://docs.frontend.agentur-loop.com/assets/videos/files/load-content.js)
 
-#### Bootstrap
+### Bootstrap
 
 Use `init` folder to register your components and global models.
 
@@ -384,7 +276,7 @@ Most of the models will be imported in one of the components, as they are mostly
 
 Use `vendor` folder to register all the external dependencies, like polyfills or global libraries.
 
-#### Components
+### Components
 
 This is where most of your code will live - you can decide if you want to create a vanilla js or vue.js component.
 Whenever possible use vanilla.js as it will usually provide better performance. Use vue.js for more complicated components.
@@ -419,13 +311,44 @@ function initalize () {
     parse(containerEl);
 }
 ```
-
 ### Enable Vue.js components
 
 To enable Vue.js components in your project search for the following string in your `scripts` directory: "Uncomment to enable Vue.js components".
 Then uncomment all three occurences of the code next to that string.
 
-#### Models
+### Usage in .vue file
+There is an `icon` component prepared to display the icon on the page.
+
+
+Example use (inline mode):
+```html
+<template>
+    <div class="vue-example-one">
+        <icon class="vue-example-one__icon" type="inline" v-html="checkmarkInlineIconSvg"></icon>
+    </div>
+</template>
+```
+
+```js
+import checkmarkInlineIcon from 'InlineIcons/checkmark-inline.svg';
+export default {
+    data () {
+        return {
+            checkmarkInlineIconSvg: checkmarkInlineIcon,
+        };
+    },
+};
+```
+
+Example use (symbol mode):
+```html
+<template>
+    <div class="vue-example-two">
+        <icon class="vue-example-two__icon" name="checkmark-symbol" type="symbol"></icon>
+    </div>
+</template>
+```
+### Models
 
 Models serve as a logic layer for components, which means you can reuse the same logic no mather what the component is (components serve as a "view" layer and models as "logic" layer).
 
@@ -466,11 +389,77 @@ I.e. you can use `import { fetchAndSortArticles } from 'Models/articles';` inste
 | Store | `templates/src/assets/scripts/store`|
 | InlineIcons | `templates/src/assets/icons/inline`|
 
+
+
+### Included models
+
+#### Overlay
+
+A full overlay (popup) system
+
+Trigger overlay from HTML:
+
+With `target="_top"` attribute:
+```html
+<a href="your-popup-content.php" target="_top">Open overlay</a>
+```
+
+With `js-overlay__link` class:
+```html
+<a href="your-popup-content.php" class="js-overlay__link">Open overlay</a>
+```
+
+Trigger overlay from JS:
+```js
+import { openOverlay } from 'Models/overlay';
+...
+openOverlay(url);
+```
+
+`openOverlay` can take a couple of parameters. The first one called `contentHolder` can be:
+- url
+- element (if the string starts with "#"). I.e. "#id-of-dom-block"
+- html (you can supply html that should be displayed). In that case specify a second parameter as `'html'`. 
+
+The overlay component has some more options. Please check the `overlay.js` file directly to check how it works in detail.
+
+The content of the overlay should be wrapped in a following div:
+```html
+<div class="overlay__content overlay__content--default js-overlay__content">
+    ...
+</div>
+```
+
+where the `--default` modifier sets the width of the content box. Add your additional sizes in the css file.
+
+If you want to show a "x" button in top right corner add this element in the overlay content area:
+```php
+echo generate_component_icon([
+    'name' => 'close',
+    'type' => 'symbol',
+    'class' => 'overlay__close js-overlay__close'
+]);
+```
+
+To simplify wrapping the overlay content in the html syntax described above there is a helper component called `overlay-wrapper`.
+
+Example use:
+```php
+echo generate_component_overlay_wrapper([
+	'content' => $content, // html inside the overlay
+	'close_icon' => false, // default: true
+	'size' => 'narrow', // default: 'default'
+]);
+```
+
+Dev talks video: **Scripts - Overlay system**
+
+![](https://docs.frontend.agentur-loop.com/assets/videos/scripts-overlay.mp4)
 #### Global debounced events
 
 `emit-debounced-events.js` model emits a `window-resized` event that is debounced. Listen to this event instead of the generic `window.onResize` event.
 
-#### Breakpoints
+### Breakpoints
 
 `breakpoints.js` model allows you to:
 - get list of currently active media query breakpoints (`currentlyActiveBreakpoints`)
@@ -525,7 +514,7 @@ dimPage();
 ...
 undimPage();
 ```
-#### Locker
+### Locker
 
 Lock page scrolling (i.e. when you show a side drawer)
 
@@ -538,11 +527,11 @@ unlockPage();
 ```
 
 
-### IE11 Support
+#### IE11 Support
 
 By default Front-End Jumpstart supports only modern browsers. If you need to support IE11 open `templates/src/assets/scripts/bootstrap/vendor/index.js` file and uncomment the lines with `IE11` at the end.
 
-### Browsersync
+#### Browsersync
 
 Browsersync creates a small server for local development with live reloading. If Browsersync detects changes in code, it makes a local rebuild and reloads the page (complete or partial).
 
