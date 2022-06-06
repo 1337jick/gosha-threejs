@@ -5,7 +5,7 @@ module.exports = merge(config, {
     output: {
         path: __dirname,
         filename: "bundle.js",
-        publicPath: "/bali/assets/js/",
+        publicPath: "/assets/js/",
     },
     mode: "production",
     devtool: false,
