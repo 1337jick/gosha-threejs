@@ -1,19 +1,15 @@
 extends /_includes/layout
 
 block title
-    title ETHERIC
+    title THRC — Full-cycle web3 agency
+
+    -
+        const pageData = {
+        }
+
+block fixed
+    +navigation(pageData.navigation)
 
 block content
-    -
-        const rawData = {
-            
-            header: {
-                title: 'Etheric boilerplate',
-            },
-        }
-    .page
-        +navigation()
-        //- scroll-content starts here
-        #view-main
-            +header(rawData.header)
-            //- +footer()
+    .scene
+

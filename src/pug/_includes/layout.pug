@@ -9,13 +9,34 @@ html(lang=__.lang, class="no-js")
         include mixins/button
         include mixins/headline
         include mixins/image
-        include overlays/example
+        include overlays/contact-overlay
         include preloader
+        include contact
         include navigation
         include header
         include footer
 
-        block content
-            span no content provied
 
+        -
+            const data = {
+            }
+
+        .page(data-barba="wrapper")
+            //-  fixed content
+            //- overlays
+            +contact-overlay(data.contact)
+
+            //- specific page fixed content
+            block fixed 
+
+            //- smooth scroll
+            #smooth-wrapper
+                #smooth-content
+                    //- specific page main content
+                    block content
+                        span no content provied
+                    
+                    //- footer
+                    block footer
+                        +footer()
         include scripts

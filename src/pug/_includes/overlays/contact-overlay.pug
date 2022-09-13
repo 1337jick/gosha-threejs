@@ -1,0 +1,10 @@
+mixin contact-overlay(data)
+    div.overlay.js-overlay__content(data-overlay="contact")
+        div.overlay__content
+            div.contact-overlay
+                //- content
+                +contact(data)
+    
+        div.overlay__bg.js-overlay__bg
+            .overlay__bg__left.js-overlay__bg__item.col-xs-6.col-md-8
+            .overlay__bg__right.js-overlay__bg__item.col-xs-6.col-md-4
