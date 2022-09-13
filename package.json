@@ -16,12 +16,13 @@
 	"dependencies": {
 		"browser-detect": "^0.2.28",
 		"domready": "^1.0.8",
-		"gsap": "^3.10.3",
+		"gsap": "npm:@gsap/business@^3.11.1",
 		"imagesloaded": "^5.0.0",
 		"lodash": "^4.17.21",
 		"sass-mq": "^6.0.0",
 		"smooth-scrollbar": "^8.7.4",
-		"svg4everybody": "^2.1.9"
+		"svg4everybody": "^2.1.9",
+		"three": "^0.144.0"
 	},
 	"browserslist": [
 		"since 2010",
