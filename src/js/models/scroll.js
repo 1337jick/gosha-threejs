@@ -1,6 +1,17 @@
-import SmoothScrollbar from 'smooth-scrollbar';
+import ScrollSmoother from 'gsap/ScrollSmoother';
 
-export function scrollToTop(smooth = false) {
-    const scrollbar = SmoothScrollbar.getAll()[0];
-    scrollbar.scrollTo(0, 0, 600);
+export function scrollToTop(smooth) {
+    const previouslyCreatedSmoother = ScrollSmoother.get(); 
+    previouslyCreatedSmoother.scrollTo(0, smooth, "top top");
 }
+
+export function scrollTo(element) {
+    const previouslyCreatedSmoother = ScrollSmoother.get(); 
+
+    if (element == null) {
+        return;
+    }
+
+    previouslyCreatedSmoother.scrollTo(element, true, "top top");
+}
+

@@ -18,3 +18,13 @@ body {
 section {
     position: relative;
 }
+
+.scene {
+    background: rgb(35, 35, 35);
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

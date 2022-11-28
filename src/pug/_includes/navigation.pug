@@ -1,12 +1,7 @@
 mixin navigation(data)
     nav.navigation.js-navigation
-        a.navigation__logo
-            +svgicon('logo', false)
         .navigation__links
-            .navigation__links__item
-                a.js-overlay__link(href="#about")
-                    span.copy.black.navigation__links__item-text About Project
-
-            .navigation__links__button
-                +button({class:"js-overlay__link", style: "white"}, {href: '#buy', label: "Get Access"})
+            a(href="#about").copy.black.navigation__links__item Instagram
+            a(href="#about").copy.black.navigation__links__item Gitlab
+               
 

@@ -1,15 +1,16 @@
 extends /_includes/layout
 
 block title
-    title THRC — Full-cycle web3 agency
+    title Gosha — Creative Developer
 
     -
         const pageData = {
         }
 
 block fixed
-    +navigation(pageData.navigation)
+    +navigation()
 
 block content
-    .scene
+    .scene(data-component='{"component": "three"}')
+        canvas.scene__canvas.js-scene
 

@@ -18,6 +18,7 @@
 		"domready": "^1.0.8",
 		"gsap": "npm:@gsap/business@^3.11.1",
 		"imagesloaded": "^5.0.0",
+		"lil-gui": "^0.17.0",
 		"lodash": "^4.17.21",
 		"sass-mq": "^6.0.0",
 		"smooth-scrollbar": "^8.7.4",

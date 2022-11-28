@@ -1,6 +1,7 @@
 import { dimPage, undimPage } from 'models/dimmer';
 import { lockPage, unlockPage } from 'models/locker';
 import { parse } from 'models/utils/app';
+import gsap from 'gsap';
 import { listen, unlisten } from 'models/utils/event-bus';
 import generateIcon from 'models/icon';
 
@@ -21,10 +22,32 @@ const states = {
 const elements = {
     links: document.querySelectorAll('a[target="_top"], .' + classes.link),
     closeButtons: document.querySelectorAll('.js-overlay__close'),
+    menuItems: document.querySelectorAll('.js-contact__link'),
+    footer: document.querySelector('.js-contact__footer'),
+    bgs: document.querySelectorAll('.js-overlay__bg__item'),
 };
 
 export function initOverlaySystem() {
     addListeners();
+
+    detectLinks();
+}
+
+function detectLinks() {
+    var links = document.querySelectorAll('a[href]');
+    var cbk = function (e) {
+        if (e.currentTarget.href === window.location.href) {
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            closeOverlay();
+        }
+    };
+
+    for (var i = 0; i < links.length; i++) {
+        links[i].addEventListener('click', cbk);
+    }
 }
 
 function addListeners() {
@@ -98,6 +121,7 @@ export function openOverlay(
     dimPage();
     lockPage();
     showOverlay(contentHolder);
+    showBg();
     requestAnimationFrame(() => {
         addInnerListeners();
     });
@@ -114,24 +138,74 @@ function showOverlay(overlay) {
     overlayEl = document.querySelector(`[data-overlay="${overlay}"]`);
 
     overlayEl.classList.add(states.visible);
+
+    // animate links
+    gsap.to(elements.menuItems, {
+        alpha: 1,
+        stagger: 0.05,
+        duration: 0.2,
+        delay: 0.1,
+        ease: 'power1.in',
+    });
+
+    gsap.fromTo(
+        elements.menuItems,
+        {
+            yPercent: 100,
+        },
+        {
+            yPercent: 0,
+            stagger: 0.05,
+            duration: 0.6,
+            delay: 0.1,
+            ease: 'expo.out',
+        }
+    );
+
+    // show fooer
+    gsap.to(elements.footer, {
+        alpha: 1,
+        yPercent: 0,
+        duration: 0.3,
+        delay: 0.4,
+        ease: 'expo.out',
+    });
 }
-function hideOverlay(overlay) {
+
+function showBg() {
+    const tl = gsap.timeline();
+    tl.to(elements.bgs, {
+        yPercent: -100,
+        stagger: 0.05,
+        duration: 0.6,
+        ease: 'expo.out',
+    });
+}
+function hideOverlay(delay) {
     overlayEl = document.querySelector(`[data-overlay].is-visible`);
 
     overlayEl.classList.remove(states.visible);
-}
 
-function getContentType(href) {
-    if (href.charAt(0) === '#') {
-        return 'element';
-    } else {
-        return 'url';
-    }
-}
+    // animate links
+    gsap.to(elements.menuItems, {
+        alpha: 0,
+        yPercent: 100,
+        stagger: -0.05,
+        duration: 0.3,
+        ease: 'expo.out',
 
-function getContentFromElement(selector) {
-    const targetEl = document.querySelector(selector);
-    return targetEl.innerHTML;
+        onComplete: () => {
+            hideBg();
+        },
+    });
+
+    // hide footer
+    gsap.to(elements.footer, {
+        alpha: 0,
+        yPercent: 10,
+        duration: 0.3,
+        ease: 'expo.out',
+    });
 }
 
 function focusOnContent() {
@@ -156,6 +230,17 @@ export function closeOverlay(relaunchOverlayConfig = false, forceClose = false) 
     setTimeout(() => {
         overlayOpen = false;
     }, 300);
+}
+
+function hideBg() {
+    const tl = gsap.timeline();
+
+    tl.to(elements.bgs, {
+        yPercent: 0,
+        stagger: 0.05,
+        duration: 0.6,
+        ease: 'expo.out',
+    });
 }
 
 export function parseOverlayLinks() {

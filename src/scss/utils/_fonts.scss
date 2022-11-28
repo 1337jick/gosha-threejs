@@ -1,34 +1,16 @@
 @font-face {
-    font-family: 'Libertad Mono';
-    src: url('../fonts/LibertadMono-Medium.woff2') format('woff2'),
-        url('../fonts/LibertadMono-Medium.woff') format('woff');
-    font-weight: 500;
+    font-family: 'Fira Code';
+    src: url('../fonts/FiraCode-Light.woff2') format('woff2'),
+        url('../fonts/FiraCode-Light.woff') format('woff');
+    font-weight: 300;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'Cygnito Mono';
-    src: url('../fonts/CygnitoMono.woff2') format('woff2'),
-        url('../fonts/CygnitoMono.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Libertad Mono';
-    src: url('../fonts/LibertadMono-Bold.woff2') format('woff2'),
-        url('../fonts/LibertadMono-Bold.woff') format('woff');
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Libertad Mono';
-    src: url('../fonts/LibertadMono-Regular.woff2') format('woff2'),
-        url('../fonts/LibertadMono-Regular.woff') format('woff');
+    font-family: 'Fira Code';
+    src: url('../fonts/FiraCode-Regular.woff2') format('woff2'),
+        url('../fonts/FiraCode-Regular.woff') format('woff');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
