@@ -2,7 +2,7 @@ $page-dimmer-fade-duration: 0.4s;
 
 .page {
     $block: &;
-    overflow: hidden;
+    // overflow: hidden;
     &::after {
         content: '';
         z-index: $z-index-page-dimmer;
