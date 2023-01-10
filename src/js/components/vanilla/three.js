@@ -78,7 +78,7 @@ export default (element) => {
 
     function addObjects() {
         const pmremGenerator = new THREE.PMREMGenerator(renderer);
-        const env = '/assets/models/image.jpg';
+        const env = '/assets/models/tex.png';
         pmremGenerator.compileEquirectangularShader();
 
         let envMap = new THREE.TextureLoader().load(env, (texture) => {
