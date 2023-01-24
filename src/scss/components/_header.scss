@@ -1,13 +1,21 @@
 .header {
     $block: &;
 
-    height: 100vh;
-    background-color: $color-primary;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    height: 300vh;
+    background-color: transparent;
 
-    &__title {
-        max-width: toRem(1200);
+
+    &__inner {
+        height: 100vh;
+    }
+    &__intro {
+        position: absolute;
+        bottom: 0;
+        font-size: 17vw;
+        white-space: nowrap;
+        color: $color-primary;
+        mix-blend-mode: difference;
+        left: 0;
+        width: fit-content;
     }
 }

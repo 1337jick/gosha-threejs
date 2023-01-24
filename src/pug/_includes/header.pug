@@ -1,4 +1,5 @@
 mixin header(data)
-    header.header
-        .header__caption
-            +headline({tag: "h1", class: "h1 header__title black center"}, data.title, 'title-in')
+    header.header.js-header(data-component='{"component": "header"}')
+        .header__inner.js-header__inner
+            
+            .header__content

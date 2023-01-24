@@ -5,15 +5,21 @@ block title
 
     -
         const pageData = {
+            header: {
+                title: 'GOSHA'
+            }
         }
 
 block fixed
-    //- div.noise(data-component='{"component": "noise"}')
-    //-     canvas.js-noise
+    .scene(data-component='{"component": "three"}')
+        canvas.scene__canvas.js-scene
+        +headline({tag: "h1", class: "h1 header__intro js-header__intro"}, 'WELCOME TO MY WORLD')
 
 
 block content
-    .scene(data-component='{"component": "three"}')
-        canvas.scene__canvas.js-scene
+
+    +header(pageData.header)
+
+
 
 

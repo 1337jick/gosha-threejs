@@ -20,10 +20,10 @@ export default (element) => {
 
 
     const params = {
-        exposure: 1,
-        bloomStrength: 0.64,
+        exposure: 0.43,
+        bloomStrength: 1.56,
         bloomThreshold: 0,
-        bloomRadius: 1
+        bloomRadius: 0.73
     };
 
     const cursor = {
@@ -60,6 +60,7 @@ export default (element) => {
         addObjects();
         addSettings();
         initPost();
+        initGsap();
         tick();
     };
 
@@ -78,7 +79,7 @@ export default (element) => {
 
     function addObjects() {
         const pmremGenerator = new THREE.PMREMGenerator(renderer);
-        const env = '/assets/models/tex.png';
+        const env = '/assets/models/tex-2.png';
         pmremGenerator.compileEquirectangularShader();
 
         let envMap = new THREE.TextureLoader().load(env, (texture) => {
@@ -98,7 +99,7 @@ export default (element) => {
                 human.position.set(-0.05, -0.8, 0);
 
                 human.geometry.center();
-                console.log(human.position);
+                console.log(human);
 
                 human.material = new THREE.MeshStandardMaterial({
                     metalness: 1,
@@ -205,30 +206,38 @@ export default (element) => {
 
     function addCameraGui() {
         // camera
-        gui.add(camera.position, 'x', -2, 2, 0.01)
+        gui.add(camera.position, 'x', -5, 5, 0.01)
             .onChange((val) => {
                 camera.position.x = val;
                 controls.update();
             })
             .name('Camera Position X');
-        gui.add(camera.position, 'y', -2, 2, 0.01)
+        gui.add(camera.position, 'y', -5, 5, 0.01)
             .onChange((val) => {
                 camera.position.y = val;
                 controls.update();
             })
             .name('Camera Position Y');
-        gui.add(camera.position, 'z', -2, 2, 0.01)
+        gui.add(camera.position, 'z', -5, 5, 0.01)
             .onChange((val) => {
                 camera.position.z = val;
                 controls.update();
             })
             .name('Camera Position Z');
-        gui.add(camera, 'zoom', 5, 20, 0.01)
+        gui.add(camera, 'zoom', -20, 20, 0.01)
             .onChange((val) => {
                 camera.zoom = val;
                 camera.updateProjectionMatrix();
             })
             .name('Camera Zoom');
+
+    }
+
+    function initGsap() {
+        const scene = gsap.timeline();
+
+        const cameraScene = cameraTimeline();
+        scene.add(cameraScene);
 
     }
 
@@ -269,8 +278,8 @@ export default (element) => {
     }
 
     function setCamera() {
-        camera.position.set(-1, 0, 0);
-        camera.zoom = 7;
+        camera.position.set(0.57, 1.07, 0.94);
+        camera.zoom = 16;
         camera.updateProjectionMatrix();
         scene.add(camera);
     }
@@ -288,6 +297,44 @@ export default (element) => {
         // renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         renderer.setSize(sizes.width, sizes.height);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    }
+
+
+    function cameraTimeline() {
+        const tl = gsap.timeline();
+
+        tl.to(camera.position, {
+            scrollTrigger: {
+                trigger: '.js-header',
+                start: () => `top top`,
+                end: () => `+=3000`,
+                scrub: true,
+                invalidateOnRefresh: true,
+                
+            },
+            x: -1,
+            y: 0,
+            z: 0,
+        });
+        tl.to(camera, {
+            scrollTrigger: {
+                trigger: '.js-header',
+                start: () => `top+=1000 top`,
+                end: () => `+=1000`,
+                scrub: true,
+                invalidateOnRefresh: true,
+                
+            },
+            zoom: 5,
+
+            onUpdate: () => {
+	
+                camera.updateProjectionMatrix();
+            
+            }
+        });
+
+        return tl;
     }
 
     const tick = () => {
