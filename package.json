@@ -14,6 +14,7 @@
 		"format": "npm run prettier:fix && npm run lint:fix"
 	},
 	"dependencies": {
+		"baffle": "^0.3.6",
 		"browser-detect": "^0.2.28",
 		"domready": "^1.0.8",
 		"gsap": "npm:@gsap/business@^3.11.1",
@@ -21,6 +22,7 @@
 		"lil-gui": "^0.17.0",
 		"lodash": "^4.17.21",
 		"sass-mq": "^6.0.0",
+		"shuffle-letters": "^1.0.2",
 		"smooth-scrollbar": "^8.7.4",
 		"svg4everybody": "^2.1.9",
 		"three": "^0.144.0"

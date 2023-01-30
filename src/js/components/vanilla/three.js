@@ -7,7 +7,9 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import { DotScreenShader } from 'models/utils/dot-screen-shader';
 
 export default (element) => {
     // Canvas
@@ -20,8 +22,8 @@ export default (element) => {
 
 
     const params = {
-        exposure: 1.5,
-        bloomStrength: 0,
+        exposure: 1.09,
+        bloomStrength: 0.45,
         bloomThreshold: 0,
         bloomRadius: 0.73
     };
@@ -279,6 +281,11 @@ export default (element) => {
         composer.addPass( bloomPass );
 
 
+        const effect1 = new ShaderPass( DotScreenShader );
+        effect1.uniforms[ 'scale' ].value = 4;
+        composer.addPass( effect1 );
+
+
         // gui
 
         gui.add(bloomPass, 'threshold', 0, 1, 0.01).onChange((val) => {
@@ -332,7 +339,7 @@ export default (element) => {
             scrollTrigger: {
                 trigger: '.js-header',
                 start: () => `top top`,
-                end: () => `+=${window.innerHeight*2}`,
+                end: () => `+=${window.innerHeight*3}`,
                 scrub: true,
                 invalidateOnRefresh: true,
                 
@@ -345,7 +352,7 @@ export default (element) => {
             scrollTrigger: {
                 trigger: '.js-header',
                 start: () => `top+=1000 top`,
-                end: () => `+=1000`,
+                end: () => `+=${window.innerHeight*2}`,
                 scrub: true,
                 invalidateOnRefresh: true,
                 
@@ -359,17 +366,17 @@ export default (element) => {
             }
         });
 
-        tl.to(human.position, {
-            scrollTrigger: {
-                trigger: '.js-header',
-                start: () => `top top-=${window.innerHeight * 2 + 100}`,
-                end: () => `+=${window.innerHeight}`,
-                scrub: true,
-                invalidateOnRefresh: true,
+        // tl.to(human.position, {
+        //     scrollTrigger: {
+        //         trigger: '.js-header',
+        //         start: () => `top top-=${window.innerHeight * 3 + 100}`,
+        //         end: () => `+=${window.innerHeight}`,
+        //         scrub: true,
+        //         invalidateOnRefresh: true,
                 
-            },
-            y: -0.4,
-        });
+        //     },
+        //     y: -0.4,
+        // });
 
         return tl;
     }

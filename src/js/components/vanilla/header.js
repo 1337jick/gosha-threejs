@@ -1,12 +1,16 @@
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import shuffleLetters from 'shuffle-letters';
+import baffle from 'baffle';
 
 export default function paint(element) {
     const elements = {
         inner: element.querySelector('.js-header__inner'),
         intro: document.querySelector('.js-header__intro'),
+        title: element.querySelector('.js-header__title'),
         introContainer: document.querySelector('.js-header__intro__container'),
     };
+    
 
 
     function init() {
@@ -34,7 +38,7 @@ export default function paint(element) {
           scrollTrigger: {
               trigger: element,
               start: () => `top top`,
-              end: () => window.innerHeight*2,
+              end: () => window.innerHeight*3,
               scrub: true,
               invalidateOnRefresh: true,
               
@@ -45,21 +49,39 @@ export default function paint(element) {
 
       ScrollTrigger.create({
         trigger: element,
-        start: `top top-=${window.innerHeight*1.8}`, //раньше чем додвинется лента
+        start: `top top-=${window.innerHeight*2.5}`, //раньше чем додвинется лента
 
         onEnter: () => {
+            // let b = baffle(elements.title);
+
+            // b.reveal(1000);
             tl.to(elements.introContainer, {
-                y: '-100%',
-                duration: 1,
+                y: '100%',
+                duration: 0.5,
                 ease: 'expo.out',
             })
+
+            shuffleLetters(elements.title, {
+                text: 'Gosha Creative Dev',
+                iterations: 12,
+                fps: 60,
+
+              });
+
+
         },
         onLeaveBack: () => {
             tl.to(elements.introContainer, {
                 y: '0',
-                duration: 1,
+                duration: 0.5,
                 ease: 'expo.out',
             })
+
+            shuffleLetters(elements.title, {
+                text: '____________',
+                iterations: 12,
+                fps: 60,
+              });
         },
     });
     }
@@ -71,7 +93,7 @@ export default function paint(element) {
               trigger: elements.inner,
               start: `top top`,
               scrub: true,
-              end: () => `+=${window.innerHeight*2}`,
+              end: () => `+=${window.innerHeight*3}`,
               pin: true,
               pinType: 'transform',
           },
