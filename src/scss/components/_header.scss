@@ -1,21 +1,24 @@
 .header {
     $block: &;
 
-    height: 300vh;
+    height: 500vh;
     background-color: transparent;
 
 
     &__inner {
         height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding-top: toRem(100);
     }
-    &__intro {
-        position: absolute;
-        bottom: 0;
-        font-size: 17vw;
-        white-space: nowrap;
-        color: $color-primary;
-        mix-blend-mode: difference;
-        left: 0;
-        width: fit-content;
+
+    &__content {
+
+    }
+    &__time {
+        margin-top: toRem(100);
+        opacity: 0.3;
     }
 }

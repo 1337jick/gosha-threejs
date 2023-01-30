@@ -14,23 +14,3 @@ body {
 section {
     position: relative;
 }
-
-.scene {
-    height: 100vh;
-    width: 100vw;
-    top: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    // z-index: 100;
-    // pointer-events: none;
-    z-index: 10000;
-}
-
-.content__title {
-    position: relative;
-    margin-bottom: 30vh;
-    z-index: 10;
-}

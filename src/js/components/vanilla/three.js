@@ -20,8 +20,8 @@ export default (element) => {
 
 
     const params = {
-        exposure: 0.43,
-        bloomStrength: 1.56,
+        exposure: 1.5,
+        bloomStrength: 0,
         bloomThreshold: 0,
         bloomRadius: 0.73
     };
@@ -60,7 +60,6 @@ export default (element) => {
         addObjects();
         addSettings();
         initPost();
-        initGsap();
         tick();
     };
 
@@ -79,34 +78,36 @@ export default (element) => {
 
     function addObjects() {
         const pmremGenerator = new THREE.PMREMGenerator(renderer);
-        const env = '/assets/models/tex-2.png';
+        const env = '/assets/models/env.jpg';
         pmremGenerator.compileEquirectangularShader();
 
         let envMap = new THREE.TextureLoader().load(env, (texture) => {
             envMap = pmremGenerator.fromEquirectangular(texture).texture;
-            console.log(envMap);
             // scene.environment = env;
             // texture.dispose();
             pmremGenerator.dispose();
 
-            gltfLoader.load('/assets/models/human.glb', (gltf) => {
+            gltfLoader.load('/assets/models/panama_lowres3.glb', (gltf) => {
                 scene.add(gltf.scene);
 
                 human = gltf.scene.children[0];
 
-                human.scale.set(0.1, 0.1, 0.1);
+                human.scale.set(1, 1, 1);
                 human.rotation.set(0, -0.5 * Math.PI, 0);
-                human.position.set(-0.05, -0.8, 0);
+                human.position.set(0, -0.8, 0.03);
 
                 human.geometry.center();
-                console.log(human);
+                // console.log(human);
 
                 human.material = new THREE.MeshStandardMaterial({
                     metalness: 1,
                     roughness: 0.28,
                 });
                 human.material.envMap = envMap;
+                
+                
                 human.material.onBeforeCompile = (shader) => {
+                    console.log('before compile happen');
                     shader.uniforms.uTime = { value: 0 };
                     shader.fragmentShader =
                         `
@@ -159,8 +160,10 @@ export default (element) => {
                         #endif
                     `
                     );
-
                     human.material.userData.shader = shader;
+
+
+                    initGsap();
                 };
 
                 // add sets to gui
@@ -179,6 +182,28 @@ export default (element) => {
                         human.position.z = val;
                     })
                     .name('Model Position Z');
+                gui.add(human.rotation, 'x', -2, 2, 0.01)
+                    .onChange((val) => {
+                        human.rotation.x = val;
+                    })
+                    .name('Model rotation X');
+                gui.add(human.rotation, 'y', -2, 2, 0.01)
+                    .onChange((val) => {
+                        human.rotation.y = val;
+                    })
+                    .name('Model rotation Y');
+                gui.add(human.rotation, 'z', -2, 2, 0.01)
+                    .onChange((val) => {
+                        human.rotation.z = val;
+                    })
+                    .name('Model rotation Z');
+
+
+                gui.add(human.material, 'metalness', -2, 2, 0.01)
+                    .onChange((val) => {
+                        human.material.metalness = val;
+                    })
+                    .name('Model metalness');
             });
         });
     }
@@ -269,10 +294,10 @@ export default (element) => {
     }
 
     function setLight() {
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-        scene.add(ambientLight);
+        // const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+        // scene.add(ambientLight);
 
-        // const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5)
+        // const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
         // directionalLight.position.set(0.5, 0, 0.866)
         // scene.add(directionalLight)
     }
@@ -307,7 +332,7 @@ export default (element) => {
             scrollTrigger: {
                 trigger: '.js-header',
                 start: () => `top top`,
-                end: () => `+=3000`,
+                end: () => `+=${window.innerHeight*2}`,
                 scrub: true,
                 invalidateOnRefresh: true,
                 
@@ -334,6 +359,18 @@ export default (element) => {
             }
         });
 
+        tl.to(human.position, {
+            scrollTrigger: {
+                trigger: '.js-header',
+                start: () => `top top-=${window.innerHeight * 2 + 100}`,
+                end: () => `+=${window.innerHeight}`,
+                scrub: true,
+                invalidateOnRefresh: true,
+                
+            },
+            y: -0.4,
+        });
+
         return tl;
     }
 
@@ -349,7 +386,7 @@ export default (element) => {
         window.requestAnimationFrame(tick);
 
         if (human) {
-            // human.rotation.y = time * 0.05;
+            // human.rotation.z = time * 0.05;
 
             if (human.material.userData) {
                 // console.log(human.material.userData.shader);

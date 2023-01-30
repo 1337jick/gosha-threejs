@@ -1,23 +1,44 @@
 extends /_includes/layout
 
 block title
-    title Gosha — Creative Developer
+    title ????/// Creative Dev
 
     -
         const pageData = {
+            navigation: {
+                logo: 'Gosha<br>Khidzhakadze',
+                links: [
+                    {
+                        label: 'about',
+                        href: '#about'
+                    },
+                    {
+                        label: 'stack',
+                        href: '#stack'
+                    },
+                    {
+                        label: 'projects',
+                        href: '#projects'
+                    },
+                ]
+            },
             header: {
                 title: 'GOSHA'
             }
         }
 
 block fixed
+    +navigation(pageData.navigation)
+
     .scene(data-component='{"component": "three"}')
         canvas.scene__canvas.js-scene
-        +headline({tag: "h1", class: "h1 header__intro js-header__intro"}, 'WELCOME TO MY WORLD')
+        .scene__title__container
+            .u-line
+                .u-line-content.js-header__intro__container
+                    +headline({tag: "h1", class: "h1 scene__title js-header__intro"}, 'WELCOME TO MY WORLD')
 
 
 block content
-
     +header(pageData.header)
 
 

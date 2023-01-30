@@ -1,9 +1,11 @@
 import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
 
 export default function paint(element) {
     const elements = {
         inner: element.querySelector('.js-header__inner'),
         intro: document.querySelector('.js-header__intro'),
+        introContainer: document.querySelector('.js-header__intro__container'),
     };
 
 
@@ -32,13 +34,34 @@ export default function paint(element) {
           scrollTrigger: {
               trigger: element,
               start: () => `top top`,
-              end: () => `+=3000`,
+              end: () => window.innerHeight*2,
               scrub: true,
               invalidateOnRefresh: true,
               
           },
-          x: -elements.intro.offsetWidth + (window.innerWidth / 1.5),
+          x: -elements.intro.offsetWidth + (window.innerWidth / 1.3),
       });
+
+
+      ScrollTrigger.create({
+        trigger: element,
+        start: `top top-=${window.innerHeight*1.8}`, //раньше чем додвинется лента
+
+        onEnter: () => {
+            tl.to(elements.introContainer, {
+                y: '-100%',
+                duration: 1,
+                ease: 'expo.out',
+            })
+        },
+        onLeaveBack: () => {
+            tl.to(elements.introContainer, {
+                y: '0',
+                duration: 1,
+                ease: 'expo.out',
+            })
+        },
+    });
     }
 
     // pin header container
@@ -48,7 +71,7 @@ export default function paint(element) {
               trigger: elements.inner,
               start: `top top`,
               scrub: true,
-              end: () => `+=3000`,
+              end: () => `+=${window.innerHeight*2}`,
               pin: true,
               pinType: 'transform',
           },

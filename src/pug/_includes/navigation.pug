@@ -1,7 +1,10 @@
 mixin navigation(data)
     nav.navigation.js-navigation
+        .navigation__logo.copy.white!= data.logo
+
         .navigation__links
-            a(href="#about").copy.black.navigation__links__item Instagram
-            a(href="#about").copy.black.navigation__links__item Gitlab
+            each link in data.links ? data.links : ['There are no values']
+                .navigation__links__item.copy= link.label
+           
                
 
