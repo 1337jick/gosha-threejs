@@ -9,7 +9,7 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
-import { DotScreenShader } from 'models/utils/dot-screen-shader';
+import { RaysShader } from 'models/utils/rays-shader';
 
 export default (element) => {
     // Canvas
@@ -46,6 +46,8 @@ export default (element) => {
     let gui;
     let time = 0;
     let human;
+
+    let dotEffect;
 
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath('/assets/draco/');
@@ -281,9 +283,9 @@ export default (element) => {
         composer.addPass( bloomPass );
 
 
-        const effect1 = new ShaderPass( DotScreenShader );
-        effect1.uniforms[ 'scale' ].value = 4;
-        composer.addPass( effect1 );
+        dotEffect = new ShaderPass( RaysShader );
+        // dotEffect.uniforms[ 'scale' ].value = 4;
+        composer.addPass( dotEffect );
 
 
         // gui
@@ -399,6 +401,9 @@ export default (element) => {
                 // console.log(human.material.userData.shader);
                 human.material.userData.shader.uniforms.uTime.value = time;
             }
+
+
+            dotEffect.uniforms.uTime.value = time;
 
             // Update camera
             // camera.position.x = cursor.x / 5

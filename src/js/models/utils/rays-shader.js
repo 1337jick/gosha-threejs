@@ -6,7 +6,7 @@ import { Vector2 } from 'three';
  * https://github.com/evanw/glfx.js
  */
 
-const DotScreenShader = {
+const RaysShader = {
     uniforms: {
         tDiffuse: { value: null },
         uSize: { value: new Vector2(window.innerWidth, window.innerHeight) },
@@ -133,4 +133,4 @@ const DotScreenShader = {
 		}`,
 };
 
-export { DotScreenShader };
+export { RaysShader };
