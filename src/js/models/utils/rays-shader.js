@@ -9,6 +9,8 @@ import { Vector2 } from 'three';
 const RaysShader = {
     uniforms: {
         tDiffuse: { value: null },
+        progress: { value: 0 },
+        
         uSize: { value: new Vector2(window.innerWidth, window.innerHeight) },
         center: { value: new Vector2(0.5, 0.5) },
         angle: { value: 1.57 },
@@ -31,6 +33,7 @@ const RaysShader = {
 
 		uniform vec2 center;
 		uniform float uTime;
+		uniform float progress;
 		uniform float angle;
 		uniform float scale;
 		uniform vec2 uSize;
@@ -120,15 +123,37 @@ const RaysShader = {
 
 			vec4 color = texture2D( tDiffuse, vUv );
 
-			// float n = snoise(vec3(vUv.xy * 10.0, uTime));
+      float lineOffset = snoise(vec3(0., 10., uTime));
 
-			float direction = mod( vUv.y *1000. + uTime*0.5, 4.) < 2. ? 1. : -1.;
+      float holoIntensity = 0.5 + 0.1*snoise(vec3(0., 30., uTime));
 
-			uv.x += direction * 12./uSize.x;
+			float n = snoise(vec3(vUv.xy * 10.0, uTime));
+
+			float direction = mod( vUv.y *1000. + uTime*0.25, 4.) < 2. ? 1. : -1.;
+
+			uv.x += direction * (8. + 4. * lineOffset)/uSize.x;
+
 			vec3 hologram = texture2D( tDiffuse, uv ).rgb;
 
+      vec3 background = vec3(0., 0.65, 1.)*.3;
+
+
+      vec3 combinedColor = color.rgb + hologram*holoIntensity;
+      vec3 luminance = vec3(0.299, 0.8, 0.114);
+
+      float lumFront = dot(luminance, combinedColor);
+      float lumBack = dot(luminance, background);
+
+      float d = lumFront - lumBack;
+      vec3 finalColor = background + d;
+
+
+      vec3 theFinalFinalColor = mix(color.rgb, finalColor, progress);
+
 			gl_FragColor = color;
-			gl_FragColor = vec4(vec3(hologram), 1.);
+			gl_FragColor = vec4(vec3(theFinalFinalColor), 1.);
+
+
 
 		}`,
 };

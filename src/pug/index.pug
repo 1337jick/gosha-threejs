@@ -24,7 +24,20 @@ block title
             },
             header: {
                 title: 'GOSHA'
-            }
+            },
+
+            works: [
+                {
+                    image: 'assets/images/struct.jpg',
+                    title: 'Struct finance',
+                    link: {
+                        href: "#",
+                        label: "Launch Site",
+                        target: "_blank",
+                    }
+
+                }
+            ]
         }
 
 block fixed
@@ -40,6 +53,7 @@ block fixed
 
 block content
     +header(pageData.header)
+    +works(pageData.works)
 
 
 

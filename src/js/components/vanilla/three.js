@@ -9,6 +9,8 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+
+
 import { RaysShader } from 'models/utils/rays-shader';
 
 export default (element) => {
@@ -22,6 +24,7 @@ export default (element) => {
 
 
     const params = {
+        progress: 0,
         exposure: 1.09,
         bloomStrength: 0.45,
         bloomThreshold: 0,
@@ -47,7 +50,7 @@ export default (element) => {
     let time = 0;
     let human;
 
-    let dotEffect;
+    let dotEffect, rayEffect;
 
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath('/assets/draco/');
@@ -69,6 +72,11 @@ export default (element) => {
 
     function addSettings() {
         gui = new dat.GUI();
+
+        // progress
+        gui.add(params, 'progress', 0, 1, 0.01).onChange(() => {
+            rayEffect.uniforms.progress.value = params.progress;
+        });      
 
         // exposure
         gui.add(params, 'exposure', 0, 2, 0.01).onChange(() => {
@@ -283,9 +291,9 @@ export default (element) => {
         composer.addPass( bloomPass );
 
 
-        dotEffect = new ShaderPass( RaysShader );
-        // dotEffect.uniforms[ 'scale' ].value = 4;
-        composer.addPass( dotEffect );
+        rayEffect = new ShaderPass( RaysShader );
+        // rayEffect.uniforms[ 'scale' ].value = 4;
+        composer.addPass( rayEffect );
 
 
         // gui
@@ -368,17 +376,17 @@ export default (element) => {
             }
         });
 
-        // tl.to(human.position, {
-        //     scrollTrigger: {
-        //         trigger: '.js-header',
-        //         start: () => `top top-=${window.innerHeight * 3 + 100}`,
-        //         end: () => `+=${window.innerHeight}`,
-        //         scrub: true,
-        //         invalidateOnRefresh: true,
+        tl.to(human.position, {
+            scrollTrigger: {
+                trigger: '.js-header',
+                start: () => `top top-=${window.innerHeight * 3 + 100}`,
+                end: () => `+=${window.innerHeight}`,
+                scrub: true,
+                invalidateOnRefresh: true,
                 
-        //     },
-        //     y: -0.4,
-        // });
+            },
+            y: -0.4,
+        });
 
         return tl;
     }
@@ -403,7 +411,7 @@ export default (element) => {
             }
 
 
-            dotEffect.uniforms.uTime.value = time;
+            rayEffect.uniforms.uTime.value = time;
 
             // Update camera
             // camera.position.x = cursor.x / 5

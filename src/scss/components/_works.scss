@@ -1,0 +1,49 @@
+.works {
+  $block: &;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &__inner {
+
+  }
+
+  &__item {
+    // transform-style: preserve-3d;
+    // transform: rotateY(0deg);
+    // animation: rotate 20s infinite linear;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    white-space: nowrap;
+    color: #9C9C9C;
+
+
+
+    img {
+      border-radius: 999px;
+      background: #000;
+      overflow: hidden;
+      width: 218px;
+      height: 123px;
+      margin: 0 toRem(60);
+    }
+
+
+    .char {
+      backface-visibility: hidden;
+    }
+
+
+    // @for $i from 1 through 200 {
+    //   .char:nth-child(#{$i}) {
+    //     transform: rotateY(calc(0deg + 14deg * $i)) translateZ(494px);
+
+    //   } 
+    // }
+    
+  }
+}

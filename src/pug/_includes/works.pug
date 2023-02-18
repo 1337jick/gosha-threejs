@@ -1,0 +1,16 @@
+mixin works(data)
+    div.works(data-component='{"component": "works"}')
+        .works__inner
+          each item in data
+            a.works__item.js-works__item.h2(href=item.link.href, target=item.link.target)
+              =item.title
+              img(src=item.image, alt=item.title)
+              =item.title
+              img(src=item.image, alt=item.title)
+              =item.title
+              img(src=item.image, alt=item.title)
+                    
+
+                    
+              
+

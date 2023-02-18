@@ -40,17 +40,17 @@ a {
 
 @mixin h1 {
     @include headline-styles;
-    font-size: 64px;
-    line-height: 1;
-    letter-spacing: 0.25em;
+    font-size: 86.1823px;
+    line-height: 1.4;
+    letter-spacing: -0.03em;
 
 }
 
 @mixin h2 {
     @include headline-styles;
-    font-size: 86.1823px;
+    font-size: 50px;;
     line-height: 1.4;
-    letter-spacing: -0.03em;
+    letter-spacing: 0.035em;
 
 }
 

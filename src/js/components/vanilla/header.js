@@ -1,7 +1,6 @@
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import shuffleLetters from 'shuffle-letters';
-import baffle from 'baffle';
 
 export default function paint(element) {
     const elements = {
