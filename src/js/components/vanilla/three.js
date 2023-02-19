@@ -5,18 +5,18 @@ import * as dat from 'lil-gui';
 import gsap from 'gsap';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
-
-import { RaysShader } from 'models/utils/rays-shader';
+import vertex from 'models/utils/shader/vertex.glsl';
+import fragment from 'models/utils/shader/fragment.glsl';
+import vertex1 from 'models/utils/shader/vertex1.glsl';
+import fragment1 from 'models/utils/shader/fragment1.glsl';
 
 export default (element) => {
     // Canvas
     const canvas = element.querySelector('canvas.js-scene');
 
+
+    console.log(vertex);
     const sizes = {
         width: window.innerWidth,
         height: window.innerHeight,
@@ -32,19 +32,14 @@ export default (element) => {
     };
 
     const cursor = {
-        x: 0,
-        y: 0,
+        x: 0, 
     };
 
     // Scene
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.01, 1000);
-    const renderer = new THREE.WebGLRenderer({
-        canvas: canvas,
-    });
 
-    const controls = new OrbitControls(camera, canvas);
-    let composer;
+
+    let renderer, camera, controls, material, geometry, plane, composer;
 
     let gui;
     let time = 0;
@@ -61,12 +56,11 @@ export default (element) => {
     const init = () => {
         addEventListeners();
         setCamera();
-        setControls();
         setRenderer();
         setLight();
         addObjects();
         addSettings();
-        initPost();
+        // initPost();
         tick();
     };
 
@@ -74,14 +68,14 @@ export default (element) => {
         gui = new dat.GUI();
 
         // progress
-        gui.add(params, 'progress', 0, 1, 0.01).onChange(() => {
-            rayEffect.uniforms.progress.value = params.progress;
-        });      
+        // gui.add(params, 'progress', 0, 1, 0.01).onChange(() => {
+        //     rayEffect.uniforms.progress.value = params.progress;
+        // });      
 
         // exposure
-        gui.add(params, 'exposure', 0, 2, 0.01).onChange(() => {
-            renderer.toneMappingExposure = params.exposure;
-        });        
+        // gui.add(params, 'exposure', 0, 2, 0.01).onChange(() => {
+        //     renderer.toneMappingExposure = params.exposure;
+        // });        
 
 
 
@@ -89,135 +83,28 @@ export default (element) => {
     }
 
     function addObjects() {
-        const pmremGenerator = new THREE.PMREMGenerator(renderer);
-        const env = '/assets/models/env.jpg';
-        pmremGenerator.compileEquirectangularShader();
-
-        let envMap = new THREE.TextureLoader().load(env, (texture) => {
-            envMap = pmremGenerator.fromEquirectangular(texture).texture;
-            // scene.environment = env;
-            // texture.dispose();
-            pmremGenerator.dispose();
-
-            gltfLoader.load('/assets/models/panama_lowres3.glb', (gltf) => {
-                scene.add(gltf.scene);
-
-                human = gltf.scene.children[0];
-
-                human.scale.set(1, 1, 1);
-                human.rotation.set(0, -0.5 * Math.PI, 0);
-                human.position.set(0, -0.8, 0.03);
-
-                human.geometry.center();
-                // console.log(human);
-
-                human.material = new THREE.MeshStandardMaterial({
-                    metalness: 1,
-                    roughness: 0.28,
-                });
-                human.material.envMap = envMap;
-                
-                
-                human.material.onBeforeCompile = (shader) => {
-                    console.log('before compile happen');
-                    shader.uniforms.uTime = { value: 0 };
-                    shader.fragmentShader =
-                        `
-                    uniform float uTime;
-
-                    mat4 rotationMatrix(vec3 axis, float angle) {
-                        axis = normalize(axis);
-                        float s = sin(angle);
-                        float c = cos(angle);
-                        float oc = 1.0 - c;
-                        
-                        return mat4(oc * axis.x * axis.x + c,           oc * axis.x * axis.y - axis.z * s,  oc * axis.z * axis.x + axis.y * s,  0.0,
-                                    oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,  0.0,
-                                    oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c,           0.0,
-                                    0.0,                                0.0,                                0.0,                                1.0);
-                    }
-                    
-                    vec3 rotate(vec3 v, vec3 axis, float angle) {
-                        mat4 m = rotationMatrix(axis, angle);
-                        return (m * vec4(v, 1.0)).xyz;
-                    }
-
-                    ` + shader.fragmentShader;
-
-                    shader.fragmentShader = shader.fragmentShader.replace(
-                        `#include <envmap_physical_pars_fragment>`,
-                        `#if defined( USE_ENVMAP )
-                            vec3 getIBLIrradiance( const in vec3 normal ) {
-                                #if defined( ENVMAP_TYPE_CUBE_UV )
-                                    vec3 worldNormal = inverseTransformDirection( normal, viewMatrix );
-                                    vec4 envMapColor = textureCubeUV( envMap, worldNormal, 1.0 );
-                                    return PI * envMapColor.rgb * envMapIntensity;
-                                #else
-                                    return vec3( 0.0 );
-                                #endif
-                            }
-                            vec3 getIBLRadiance( const in vec3 viewDir, const in vec3 normal, const in float roughness ) {
-                                #if defined( ENVMAP_TYPE_CUBE_UV )
-                                    vec3 reflectVec = reflect( - viewDir, normal );
-                                    // Mixing the reflection with the normal is more accurate and keeps rough objects from gathering light from behind their tangent plane.
-                                    reflectVec = normalize( mix( reflectVec, normal, roughness * roughness) );
-                                    reflectVec = inverseTransformDirection( reflectVec, viewMatrix );
-                                    reflectVec = rotate(reflectVec, vec3(1.0, 0.0, 0.0), uTime * 0.05);
-                                    vec4 envMapColor = textureCubeUV( envMap, reflectVec, roughness );
-                                    return envMapColor.rgb * envMapIntensity;
-                                #else
-                                    return vec3( 0.0 );
-                                #endif
-                            }
-                        #endif
-                    `
-                    );
-                    human.material.userData.shader = shader;
-
-
-                    initGsap();
-                };
-
-                // add sets to gui
-                gui.add(human.position, 'x', -2, 2, 0.01)
-                    .onChange((val) => {
-                        human.position.x = val;
-                    })
-                    .name('Model Position X');
-                gui.add(human.position, 'y', -2, 2, 0.01)
-                    .onChange((val) => {
-                        human.position.y = val;
-                    })
-                    .name('Model Position Y');
-                gui.add(human.position, 'z', -2, 2, 0.01)
-                    .onChange((val) => {
-                        human.position.z = val;
-                    })
-                    .name('Model Position Z');
-                gui.add(human.rotation, 'x', -2, 2, 0.01)
-                    .onChange((val) => {
-                        human.rotation.x = val;
-                    })
-                    .name('Model rotation X');
-                gui.add(human.rotation, 'y', -2, 2, 0.01)
-                    .onChange((val) => {
-                        human.rotation.y = val;
-                    })
-                    .name('Model rotation Y');
-                gui.add(human.rotation, 'z', -2, 2, 0.01)
-                    .onChange((val) => {
-                        human.rotation.z = val;
-                    })
-                    .name('Model rotation Z');
-
-
-                gui.add(human.material, 'metalness', -2, 2, 0.01)
-                    .onChange((val) => {
-                        human.material.metalness = val;
-                    })
-                    .name('Model metalness');
-            });
+        material = new THREE.ShaderMaterial ({
+            extensions: {
+                derivatives: "#extension GL_OES_standard _derivatives : enable"
+            },
+            side: THREE.DoubleSide,
+            uniforms: {
+                time: { value: 0 },
+                resolution: { value: new THREE.Vector4 () },
+            },
+            // wireframe: true,
+            // transparent: true,
+            vertexShader: vertex,
+            fragmentShader: fragment
         });
+        
+
+        geometry = new THREE.SphereGeometry(5, 32, 32);
+
+
+        console.log(material);
+        plane = new THREE.Mesh(geometry, material);
+        scene.add(plane);
     }
 
     function addEventListeners() {
@@ -235,10 +122,10 @@ export default (element) => {
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         });
 
-        window.addEventListener('mousemove', (event) => {
-            cursor.x = event.clientX / sizes.width - 0.5;
-            cursor.y = -(event.clientY / sizes.height - 0.5);
-        });
+        // window.addEventListener('mousemove', (event) => {
+        //     cursor.x = event.clientX / sizes.width - 0.5;
+        //     cursor.y = -(event.clientY / sizes.height - 0.5);
+        // });
     }
 
     function addCameraGui() {
@@ -270,49 +157,12 @@ export default (element) => {
 
     }
 
-    function initGsap() {
-        const scene = gsap.timeline();
-
-        const cameraScene = cameraTimeline();
-        scene.add(cameraScene);
-
-    }
-
-    function initPost() {
-        const renderScene = new RenderPass( scene, camera );
-
-        const bloomPass = new UnrealBloomPass( new THREE.Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.4, 0.85 );
-        bloomPass.threshold = params.bloomThreshold;
-        bloomPass.strength = params.bloomStrength;
-        bloomPass.radius = params.bloomRadius;
-
-        composer = new EffectComposer( renderer );
-        composer.addPass( renderScene );
-        composer.addPass( bloomPass );
 
 
-        rayEffect = new ShaderPass( RaysShader );
-        // rayEffect.uniforms[ 'scale' ].value = 4;
-        composer.addPass( rayEffect );
-
-
-        // gui
-
-        gui.add(bloomPass, 'threshold', 0, 1, 0.01).onChange((val) => {
-            bloomPass.threshold = val;
-        });
-        gui.add(bloomPass, 'strength', 0, 5, 0.01).onChange((val) => {
-            bloomPass.strength = val;
-        });
-        gui.add(bloomPass, 'radius', 0, 1.5, 0.01).onChange((val) => {
-            bloomPass.radius = val;
-        });
-
-    }
 
     function setLight() {
-        // const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-        // scene.add(ambientLight);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+        scene.add(ambientLight);
 
         // const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
         // directionalLight.position.set(0.5, 0, 0.866)
@@ -320,25 +170,28 @@ export default (element) => {
     }
 
     function setCamera() {
-        camera.position.set(0.57, 1.07, 0.94);
-        camera.zoom = 16;
+        camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.01, 1000);
+        controls = new OrbitControls(camera, canvas);
+        camera.position.set(0,0, 1.3)
+
+
         camera.updateProjectionMatrix();
         scene.add(camera);
-    }
 
-    function setControls() {
-        // Controls
         controls.enableDamping = true;
-        // controls.target.set(0, 0.8, 0 );
     }
 
     function setRenderer() {
-        renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = params.exposure;
-        // renderer.shadowMap.enabled = true;
-        // renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        renderer.setSize(sizes.width, sizes.height);
+        renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+        }); 
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(sizes.width, sizes.height);
+        renderer.setClearColor(0x222222, 1);
+        renderer.physicallyCorrectLights = true;
+        renderer.outputEncoding = THREE.sRGBEncoding;
+
+
     }
 
 
@@ -395,29 +248,14 @@ export default (element) => {
         // Update controls
         controls.update();
 
-        // Render
-        composer.render(scene, camera);
-
-        time += 0.05;
-        // Call tick again on the next frame
+        time += 0.005;
+        material.uniforms.time.value = time;
         window.requestAnimationFrame(tick);
 
-        if (human) {
-            // human.rotation.z = time * 0.05;
-
-            if (human.material.userData) {
-                // console.log(human.material.userData.shader);
-                human.material.userData.shader.uniforms.uTime.value = time;
-            }
+        // Render
+        renderer.render(scene, camera);
 
 
-            rayEffect.uniforms.uTime.value = time;
-
-            // Update camera
-            // camera.position.x = cursor.x / 5
-            // camera.position.y = cursor.y * 5
-            // camera.lookAt(human.position)
-        }
     };
 
     init();

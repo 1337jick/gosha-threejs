@@ -22,19 +22,19 @@ $page-dimmer-fade-duration: 0.4s;
 
     /* Grainy texture animation by Geoff Graham https://css-tricks.com/snippets/css/animated-grainy-texture/ */
 
-    &::before {
-        animation: grain 8s steps(10) infinite;
-        background-image: url('../images/noise.png');
-        content: '';
-        height: 300%;
-        left: -50%;
-        opacity: 0.8;
-        position: fixed;
-        top: -100%;
-        width: 300%;
-        pointer-events: none;
-        z-index: 50;
-    }
+    // &::before {
+    //     animation: grain 8s steps(10) infinite;
+    //     background-image: url('../images/noise.png');
+    //     content: '';
+    //     height: 300%;
+    //     left: -50%;
+    //     opacity: 0.8;
+    //     position: fixed;
+    //     top: -100%;
+    //     width: 300%;
+    //     pointer-events: none;
+    //     z-index: 50;
+    // }
 
     .is-dimmed & {
         &::after {
