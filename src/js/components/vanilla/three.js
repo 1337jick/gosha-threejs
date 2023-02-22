@@ -129,9 +129,10 @@ export default (element) => {
         gltfLoader.load('/assets/models/invader.glb', (gltf) => {
     
 
-            invader = gltf.scene.children[0];
+            console.log(gltf.scene);
+            invader = gltf.scene;
 
-            invader.scale.set(0.4, 0.4, 0.4);
+            invader.scale.set(0.2, 0.2, 0.2);
             // invader.rotation.set(0, -0.5 * Math.PI, 0);
             // invader.position.set(0, -0.8, 0.03);
 
@@ -154,7 +155,9 @@ export default (element) => {
                 fragmentShader: fragment1
             });
 
-            scene.add(gltf.scene);
+
+
+            scene.add(invader);
 
             
  
@@ -306,17 +309,21 @@ export default (element) => {
 
         time += 0.003;
 
+        cubeCamera.update(renderer, scene);
+        material.uniforms.time.value = time;
+
+        window.requestAnimationFrame(tick);
+
+        // Render
+        renderer.render(scene, camera);
+
         if(invader) {
-            invader.visible = false;
-            cubeCamera.update(renderer, scene);
-            invader.visible = true;
+            // invader.visible = false;
+        
+            // invader.visible = true;
             
-            invader.uniforms.tCube.value = cubeRenderTarget.texture;
-            material.uniforms.time.value = time;
-            window.requestAnimationFrame(tick);
+            invader.material.uniforms.tCube.value = cubeRenderTarget.texture;
     
-            // Render
-            renderer.render(scene, camera);
     
         }
 
