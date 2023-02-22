@@ -39,7 +39,7 @@ export default (element) => {
     const scene = new THREE.Scene();
 
 
-    let renderer, camera, controls, material, geometry, plane, composer;
+    let renderer, camera, controls, material, materialSmall, geometry, geometrySmall, plane, planeSmall, composer, cubeRenderTarget, cubeCamera;
 
     let gui;
     let time = 0;
@@ -67,22 +67,21 @@ export default (element) => {
     function addSettings() {
         gui = new dat.GUI();
 
-        // progress
-        // gui.add(params, 'progress', 0, 1, 0.01).onChange(() => {
-        //     rayEffect.uniforms.progress.value = params.progress;
-        // });      
-
-        // exposure
-        // gui.add(params, 'exposure', 0, 2, 0.01).onChange(() => {
-        //     renderer.toneMappingExposure = params.exposure;
-        // });        
-
-
 
         addCameraGui();
     }
 
     function addObjects() {
+        cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 256, {
+            format: THREE.RGBAFormat,
+            generateMipmaps: true,
+            minFilter: THREE.LinearMipmapLinearFilter,
+            encoding: THREE.sRGBEncoding // temporary -- to prevent the material's shader from recompiling every frame 
+        });
+
+        cubeCamera = new THREE.CubeCamera( 0.1, 10, cubeRenderTarget );
+
+        // bg sphere
         material = new THREE.ShaderMaterial ({
             extensions: {
                 derivatives: "#extension GL_OES_standard _derivatives : enable"
@@ -99,12 +98,33 @@ export default (element) => {
         });
         
 
-        geometry = new THREE.SphereGeometry(5, 32, 32);
+        geometry = new THREE.SphereGeometry(3, 32, 32);
 
 
-        console.log(material);
         plane = new THREE.Mesh(geometry, material);
         scene.add(plane);
+
+
+
+        // inner sphere
+        geometrySmall = new THREE.SphereGeometry(0.4, 32, 32);
+        materialSmall = new THREE.ShaderMaterial ({
+            extensions: {
+                derivatives: "#extension GL_OES_standard _derivatives : enable"
+            },
+            side: THREE.DoubleSide,
+            uniforms: {
+                time: { value: 0 },
+                tCube: { value: 0 },
+                resolution: { value: new THREE.Vector4 () },
+            },
+            // wireframe: true,
+            // transparent: true,
+            vertexShader: vertex1,
+            fragmentShader: fragment1
+        });
+        planeSmall = new THREE.Mesh(geometrySmall, materialSmall);
+        scene.add(planeSmall);
     }
 
     function addEventListeners() {
@@ -248,7 +268,13 @@ export default (element) => {
         // Update controls
         controls.update();
 
-        time += 0.005;
+        time += 0.003;
+
+        planeSmall.visible = false;
+        cubeCamera.update(renderer, scene);
+        planeSmall.visible = true;
+        
+        materialSmall.uniforms.tCube.value = cubeRenderTarget.texture;
         material.uniforms.time.value = time;
         window.requestAnimationFrame(tick);
 

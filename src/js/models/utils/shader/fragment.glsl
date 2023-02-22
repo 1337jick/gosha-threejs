@@ -54,14 +54,17 @@ mat2 rotate2d(float _angle){
 void main() {
     float n = noise(vPosition +time);
 
-    vec3 basefirst =  vec3(120./255., 158./255., 113./255.);
-    vec3 accent =  vec3(0., 0., 0.);
-    vec3 baseSecond =  vec3(224./255., 148./255., 66./255.);
+    
+
+    // vec3 basefirst =  vec3(240./255., 67./255., 147./255.); //pink
+    vec3 basefirst =  vec3(255./255., 96./255., 0./255.); //yellow
+    vec3 accent =  vec3(20./255., 0., 38./255.);
+    vec3 baseSecond =  vec3(36./255., 14./255., 139./255.);
     // vec3 baseThird = vec3(232./255., 201./255., 73./255.);
 
     vec2 baseUV = rotate2d(n)*vPosition.xy*0.1;
-    float basePattern = lines(baseUV, 0.5);
-    float secondPattern = lines(baseUV, 0.1);
+    float basePattern = lines(baseUV, 0.);
+    float secondPattern = lines(baseUV, 0.5);
 
     vec3 baseColor = mix(baseSecond,basefirst,basePattern);
     vec3 secondBaseColor = mix(baseColor,accent,secondPattern);
