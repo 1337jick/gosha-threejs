@@ -91,7 +91,7 @@ export default (element) => {
                         },
                         side: THREE.DoubleSide,
                         uniforms: {
-                            uTexture: {
+                            tCube: {
                                 value: null,
                             },
                             winResolution: {
@@ -238,26 +238,18 @@ export default (element) => {
     }
 
     const tick = () => {
-
-        // Update controls
-        controls.update();
-
-        time += 0.003;
-
-        cubeCamera.update(renderer, scene);
-
-        window.requestAnimationFrame(tick);
-
-        // Render
-        renderer.render(scene, camera);
-
         if (invader) {
+            cubeCamera.update(renderer, scene);
+
+
+            // Render
+            renderer.render(scene, camera);
+
 
             invader.visible = false;
-            
             invader.traverse(function (child) {
                 if (child.isMesh) {
-                    child.material.uniforms.uTexture.value = cubeRenderTarget.texture;
+                    child.material.uniforms.tCube.value = cubeRenderTarget.texture;
                 }
             });
     
@@ -266,6 +258,12 @@ export default (element) => {
 
             // invader.children.material.uniforms.tCube.value = cubeRenderTarget.texture;
         }
+
+        // Update controls
+        controls.update();
+
+        time += 0.003;
+        window.requestAnimationFrame(tick);
     };
 
     init();
