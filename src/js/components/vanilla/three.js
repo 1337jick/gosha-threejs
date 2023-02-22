@@ -27,7 +27,7 @@ export default (element) => {
     const scene = new THREE.Scene();
 
 
-    let renderer, camera, controls, material, mesh, geometry, invader;
+    let renderer, cubeRenderTarget, camera, cubeCamera, controls, material, mesh, geometry, invader;
 
     let gui;
     let time = 0;
@@ -56,6 +56,15 @@ export default (element) => {
     }
 
     function addObjects() {
+        cubeRenderTarget = new THREE.WebGLCubeRenderTarget(256, {
+            format: THREE.RGBAFormat,
+            generateMipmaps: true,
+            minFilter: THREE.LinearMipmapLinearFilter,
+            encoding: THREE.sRGBEncoding, // temporary -- to prevent the material's shader from recompiling every frame
+        });
+        cubeCamera = new THREE.CubeCamera(0.1, 10, cubeRenderTarget);
+
+
         geometry = new THREE.SphereGeometry(0.333, 32, 32);
 
         material = new THREE.MeshBasicMaterial({
@@ -230,29 +239,33 @@ export default (element) => {
 
     const tick = () => {
 
-
-        if(invader) {
-            
-
-            renderer.render(scene, camera);
-    
-            invader.traverse(function (child) {
-                if (child.isMesh) {
-                    child.material.uniforms.uTexture.value = mainRenderTarget.texture;
-                }
-            });
-   
-    
-   
-            // Show the mesh
-            // invader.visible = true;
-        }
-
-
         // Update controls
         controls.update();
+
         time += 0.003;
+
+        cubeCamera.update(renderer, scene);
+
         window.requestAnimationFrame(tick);
+
+        // Render
+        renderer.render(scene, camera);
+
+        if (invader) {
+
+            invader.visible = false;
+            
+            invader.traverse(function (child) {
+                if (child.isMesh) {
+                    child.material.uniforms.uTexture.value = cubeRenderTarget.texture;
+                }
+            });
+    
+
+            invader.visible = true;
+
+            // invader.children.material.uniforms.tCube.value = cubeRenderTarget.texture;
+        }
     };
 
     init();
