@@ -238,17 +238,17 @@ export default (element) => {
 
 
         if(invader) {
-            invader.current.visible = false;
+            invader.visible = false;
             renderer.setRenderTarget(mainRenderTarget);
             // Render
             renderer.render(scene, camera);
     
             // Pass the texture data to our shader material
-            invader.current.material.uniforms.uTexture.value = mainRenderTarget.texture;
+            invader.material.uniforms.uTexture.value = mainRenderTarget.texture;
     
             renderer.setRenderTarget(null);
             // Show the mesh
-            invader.current.visible = true;
+            invader.visible = true;
         }
 
 
