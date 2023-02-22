@@ -306,16 +306,20 @@ export default (element) => {
 
         time += 0.003;
 
-        planeSmall.visible = false;
-        cubeCamera.update(renderer, scene);
-        planeSmall.visible = true;
-        
-        invader.uniforms.tCube.value = cubeRenderTarget.texture;
-        material.uniforms.time.value = time;
-        window.requestAnimationFrame(tick);
+        if(invader) {
+            invader.visible = false;
+            cubeCamera.update(renderer, scene);
+            invader.visible = true;
+            
+            invader.uniforms.tCube.value = cubeRenderTarget.texture;
+            material.uniforms.time.value = time;
+            window.requestAnimationFrame(tick);
+    
+            // Render
+            renderer.render(scene, camera);
+    
+        }
 
-        // Render
-        renderer.render(scene, camera);
 
 
     };
