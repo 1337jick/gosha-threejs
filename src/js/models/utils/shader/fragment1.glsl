@@ -1,22 +1,9 @@
-
-uniform samplerCube tCube;
-
-varying vec3 vReflect;
-varying vec3 vRefract[3];
-varying float vReflectionFactor;
+uniform vec2 winResolution;
+uniform sampler2D uTexture;
 
 void main() {
-
-    vec4 reflectedColor = textureCube( tCube, vec3( -vReflect.x, vReflect.yz ) );
-    vec4 refractedColor = vec4( 1.0 );
-
-    refractedColor.r = textureCube( tCube, vec3( vRefract[0].x, vRefract[0].yz ) ).r;
-    refractedColor.g = textureCube( tCube, vec3( vRefract[1].x, vRefract[1].yz ) ).g;
-    refractedColor.b = textureCube( tCube, vec3( vRefract[2].x, vRefract[2].yz ) ).b;
-
-    gl_FragColor = mix( refractedColor, reflectedColor, clamp( vReflectionFactor, 0.0, 1.0 ) );
-
-
-    
-    gl_FragColor = refractedColor;
+  vec2 uv = gl_FragCoord.xy / winResolution.xy;
+  vec4 color = texture2D(uTexture, uv);
+  
+  gl_FragColor = color;
 }

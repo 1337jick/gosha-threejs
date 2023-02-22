@@ -5,10 +5,8 @@ import * as dat from 'lil-gui';
 import gsap from 'gsap';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
-import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
+import { range } from 'models/utils/range';
 
-import vertex from 'models/utils/shader/vertex.glsl';
-import fragment from 'models/utils/shader/fragment.glsl';
 import vertex1 from 'models/utils/shader/vertex1.glsl';
 import fragment1 from 'models/utils/shader/fragment1.glsl';
 
@@ -16,61 +14,29 @@ export default (element) => {
     // Canvas
     const canvas = element.querySelector('canvas.js-scene');
 
-    console.log(vertex);
     const sizes = {
         width: window.innerWidth,
         height: window.innerHeight,
     };
 
-    const params = {
-        iorR: { min: 1.0, max: 2.333, step: 0.001, value: 1.15 },
-        iorY: { min: 1.0, max: 2.333, step: 0.001, value: 1.16 },
-        iorG: { min: 1.0, max: 2.333, step: 0.001, value: 1.18 },
-        iorC: { min: 1.0, max: 2.333, step: 0.001, value: 1.22 },
-        iorB: { min: 1.0, max: 2.333, step: 0.001, value: 1.22 },
-        iorP: { min: 1.0, max: 2.333, step: 0.001, value: 1.22 },
-
-        saturation: { value: 1.08, min: 1, max: 1.25, step: 0.01 },
-        chromaticAberration: {
-            value: 0.6,
-            min: 0,
-            max: 1.5,
-            step: 0.01,
-        },
-        refraction: {
-            value: 0.4,
-            min: 0,
-            max: 1,
-            step: 0.01,
-        },
-    };
-
-    const cursor = {
-        x: 0,
-    };
+    const columns = range(-7.5, 7.5, 2.5);
+    const rows = range(-7.5, 7.5, 2.5);
 
     // Scene
     const scene = new THREE.Scene();
 
-    let renderer,
-        camera,
-        controls,
-        material,
-        materialSmall,
-        geometry,
-        geometrySmall,
-        plane,
-        planeSmall,
-        composer,
-        cubeRenderTarget,
-        cubeCamera,
-        invader;
+    const mainRenderTarget = new THREE.WebGLRenderTarget(sizes.width, sizes.height, {
+        minFilter: THREE.LinearFilter,
+        magFilter: THREE.NearestFilter,
+        format: THREE.RGBAFormat,
+        encoding: THREE.sRGBEncoding,
+    });
+
+
+    let renderer, camera, controls, material, mesh, geometry, invader;
 
     let gui;
     let time = 0;
-    let human;
-
-    let dotEffect, rayEffect;
 
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath('/assets/draco/');
@@ -78,15 +44,13 @@ export default (element) => {
     const gltfLoader = new GLTFLoader();
     gltfLoader.setDRACOLoader(dracoLoader);
 
-    const fontLoader = new FontLoader();
-
     const init = () => {
         addEventListeners();
         setCamera();
         setRenderer();
         setLight();
         addObjects();
-        addSettings();
+        // addSettings();
         // initPost();
         tick();
     };
@@ -98,121 +62,55 @@ export default (element) => {
     }
 
     function addObjects() {
-        cubeRenderTarget = new THREE.WebGLCubeRenderTarget(256, {
-            format: THREE.RGBAFormat,
-            generateMipmaps: true,
-            minFilter: THREE.LinearMipmapLinearFilter,
-            encoding: THREE.sRGBEncoding, // temporary -- to prevent the material's shader from recompiling every frame
+        geometry = new THREE.SphereGeometry(0.333, 32, 32);
+
+        material = new THREE.MeshBasicMaterial({
+            color: 0xffffff,
         });
-
-        cubeCamera = new THREE.CubeCamera(0.1, 10, cubeRenderTarget);
-
-        // bg sphere
-        material = new THREE.ShaderMaterial({
-            extensions: {
-                derivatives: '#extension GL_OES_standard _derivatives : enable',
-            },
-            side: THREE.DoubleSide,
-            uniforms: {
-                time: { value: 0 },
-                resolution: { value: new THREE.Vector4() },
-            },
-            // wireframe: true,
-            // transparent: true,
-            vertexShader: vertex,
-            fragmentShader: fragment,
+        columns.map((col, i) => {
+            rows.map((row, j) => {
+                mesh = new THREE.Mesh(geometry, material);
+                mesh.position.set(col, row, -4);
+                scene.add(mesh);
+            });
         });
-
-        geometry = new THREE.SphereGeometry(3, 32, 32);
-
-        plane = new THREE.Mesh(geometry, material);
-        scene.add(plane);
-
-        // inner sphere
-        // geometrySmall = new THREE.SphereGeometry(0.4, 32, 32);
-        // materialSmall = new THREE.ShaderMaterial ({
-        //     extensions: {
-        //         derivatives: "#extension GL_OES_standard _derivatives : enable"
-        //     },
-        //     side: THREE.DoubleSide,
-        //     uniforms: {
-        //         time: { value: 0 },
-        //         tCube: { value: 0 },
-        //         resolution: { value: new THREE.Vector4 () },
-        //     },
-        //     // wireframe: true,
-        //     // transparent: true,
-        //     vertexShader: vertex1,
-        //     fragmentShader: fragment1
-        // });
-        // planeSmall = new THREE.Mesh(geometrySmall, materialSmall);
-        // scene.add(planeSmall);
 
         gltfLoader.load('/assets/models/invader.glb', (gltf) => {
             invader = gltf.scene;
 
-            invader.scale.set(0.2, 0.2, 0.2);
-            // invader.rotation.set(0, -0.5 * Math.PI, 0);
-            // invader.position.set(0, -0.8, 0.03);
-
-            // invader.geometry.center();
-            // console.log(invader);
+            invader.scale.set(1, 1, 1);
 
             invader.traverse(function (child) {
                 if (child.isMesh) {
-                    //console.log(child);
-
-                    // console.log(child);
                     child.material = new THREE.ShaderMaterial({
                         extensions: {
                             derivatives: '#extension GL_OES_standard _derivatives : enable',
                         },
                         side: THREE.DoubleSide,
                         uniforms: {
-                            time: { value: 0 },
-                            tCube: { value: 0 },
-                            resolution: { value: new THREE.Vector4() },
+                            uTexture: {
+                                value: null,
+                            },
+                            winResolution: {
+                                value: new THREE.Vector2(
+                                    window.innerWidth,
+                                    window.innerHeight
+                                ).multiplyScalar(Math.min(window.devicePixelRatio, 2)), // if DPR is 3 the shader glitches 🤷‍♂️
+                            },
                         },
-                        // wireframe: true,
-                        // transparent: true,
+ 
                         vertexShader: vertex1,
                         fragmentShader: fragment1,
                     });
 
-                    console.log(child.material);
+                    // console.log(child.material);
 
                     // roughnessMipmapper.generateMipmaps(child.material);
                 }
             });
 
-            console.log(invader);
+            // console.log(invader);
             scene.add(invader);
-        });
-
-        // add text
-
-        fontLoader.load('/assets/models/helvetiker.json', function (font) {
-            var textPositions = [[-0.5, 0, -1]];
-
-            var textMessages = ['GOSHA'];
-
-            var textSizes = [0.2];
-
-            var textName = ['title'];
-
-            var textsNumber = textPositions.length;
-
-            for (var i = 0; i < textsNumber; i++) {
-                var textsShapes = font.generateShapes(textMessages[i], textSizes[i]);
-                var textsGeometry = new THREE.ShapeBufferGeometry(textsShapes);
-                var textsMaterial = new THREE.MeshBasicMaterial({ color: 0xeeeeee });
-
-                var text = new THREE.Mesh(textsGeometry, textsMaterial);
-                text.position.set(textPositions[i][0], textPositions[i][1], textPositions[i][2]);
-                text.name = textName[i];
-
-                scene.add(text);
-            }
         });
     }
 
@@ -268,16 +166,12 @@ export default (element) => {
     function setLight() {
         const ambientLight = new THREE.AmbientLight(0xffffff, 1);
         scene.add(ambientLight);
-
-        // const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
-        // directionalLight.position.set(0.5, 0, 0.866)
-        // scene.add(directionalLight)
     }
 
     function setCamera() {
         camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.01, 1000);
         controls = new OrbitControls(camera, canvas);
-        camera.position.set(0, 0, 1.3);
+        camera.position.set(0, 0, 4);
 
         camera.updateProjectionMatrix();
         scene.add(camera);
@@ -291,7 +185,7 @@ export default (element) => {
         });
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.setSize(sizes.width, sizes.height);
-        renderer.setClearColor(0x222222, 1);
+        renderer.setClearColor(0x111111, 1);
         renderer.physicallyCorrectLights = true;
         renderer.outputEncoding = THREE.sRGBEncoding;
     }
@@ -341,31 +235,27 @@ export default (element) => {
     }
 
     const tick = () => {
+
+
+        if(invader) {
+            invader.current.visible = false;
+            renderer.setRenderTarget(mainRenderTarget);
+            // Render
+            renderer.render(scene, camera);
+    
+            // Pass the texture data to our shader material
+            invader.current.material.uniforms.uTexture.value = mainRenderTarget.texture;
+    
+            renderer.setRenderTarget(null);
+            // Show the mesh
+            invader.current.visible = true;
+        }
+
+
         // Update controls
         controls.update();
-
         time += 0.003;
-
-        cubeCamera.update(renderer, scene);
-        material.uniforms.time.value = time;
-
         window.requestAnimationFrame(tick);
-
-        // Render
-        renderer.render(scene, camera);
-
-        if (invader) {
-            invader.traverse(function (child) {
-                if (child.isMesh) {
-                    child.material.uniforms.tCube.value = cubeRenderTarget.texture;
-                }
-            });
-            // invader.visible = false;
-
-            // invader.visible = true;
-
-            // invader.children.material.uniforms.tCube.value = cubeRenderTarget.texture;
-        }
     };
 
     init();
