@@ -39,7 +39,7 @@ export default (element) => {
     const scene = new THREE.Scene();
 
 
-    let renderer, camera, controls, material, materialSmall, geometry, geometrySmall, plane, planeSmall, composer, cubeRenderTarget, cubeCamera;
+    let renderer, camera, controls, material, materialSmall, geometry, geometrySmall, plane, planeSmall, composer, cubeRenderTarget, cubeCamera, invader;
 
     let gui;
     let time = 0;
@@ -107,24 +107,60 @@ export default (element) => {
 
 
         // inner sphere
-        geometrySmall = new THREE.SphereGeometry(0.4, 32, 32);
-        materialSmall = new THREE.ShaderMaterial ({
-            extensions: {
-                derivatives: "#extension GL_OES_standard _derivatives : enable"
-            },
-            side: THREE.DoubleSide,
-            uniforms: {
-                time: { value: 0 },
-                tCube: { value: 0 },
-                resolution: { value: new THREE.Vector4 () },
-            },
-            // wireframe: true,
-            // transparent: true,
-            vertexShader: vertex1,
-            fragmentShader: fragment1
+        // geometrySmall = new THREE.SphereGeometry(0.4, 32, 32);
+        // materialSmall = new THREE.ShaderMaterial ({
+        //     extensions: {
+        //         derivatives: "#extension GL_OES_standard _derivatives : enable"
+        //     },
+        //     side: THREE.DoubleSide,
+        //     uniforms: {
+        //         time: { value: 0 },
+        //         tCube: { value: 0 },
+        //         resolution: { value: new THREE.Vector4 () },
+        //     },
+        //     // wireframe: true,
+        //     // transparent: true,
+        //     vertexShader: vertex1,
+        //     fragmentShader: fragment1
+        // });
+        // planeSmall = new THREE.Mesh(geometrySmall, materialSmall);
+        // scene.add(planeSmall);
+
+        gltfLoader.load('/assets/models/invader.glb', (gltf) => {
+    
+
+            invader = gltf.scene.children[0];
+
+            invader.scale.set(0.4, 0.4, 0.4);
+            // invader.rotation.set(0, -0.5 * Math.PI, 0);
+            // invader.position.set(0, -0.8, 0.03);
+
+            // invader.geometry.center();
+            // console.log(invader);
+
+            invader.material = new THREE.ShaderMaterial({
+                extensions: {
+                    derivatives: "#extension GL_OES_standard _derivatives : enable"
+                },
+                side: THREE.DoubleSide,
+                uniforms: {
+                    time: { value: 0 },
+                    tCube: { value: 0 },
+                    resolution: { value: new THREE.Vector4 () },
+                },
+                // wireframe: true,
+                // transparent: true,
+                vertexShader: vertex1,
+                fragmentShader: fragment1
+            });
+
+            scene.add(gltf.scene);
+
+            
+ 
+
+
         });
-        planeSmall = new THREE.Mesh(geometrySmall, materialSmall);
-        scene.add(planeSmall);
     }
 
     function addEventListeners() {
@@ -274,7 +310,7 @@ export default (element) => {
         cubeCamera.update(renderer, scene);
         planeSmall.visible = true;
         
-        materialSmall.uniforms.tCube.value = cubeRenderTarget.texture;
+        invader.uniforms.tCube.value = cubeRenderTarget.texture;
         material.uniforms.time.value = time;
         window.requestAnimationFrame(tick);
 
