@@ -37,9 +37,9 @@ float noise(vec3 p){
 float lines(vec2 uv, float offset) {
     // return abs(sin(uv.x*PI*2.0));
     return smoothstep(
-        0.0,
-        0.5 + offset*0.5,
-        abs(0.5*(sin(uv.x*30.) + offset*2.))
+        0.,
+        0.5 + offset*0.5, // плавность перехода из цвета в цвет
+        abs(0.5*(sin(uv.x*30.) + offset*2.)) //жирность световой линии ;больше - больше акцента
     );
 
 }
@@ -56,13 +56,13 @@ void main() {
 
     
 
-    // vec3 basefirst =  vec3(240./255., 67./255., 147./255.); //pink
-    vec3 basefirst =  vec3(255./255., 96./255., 0./255.); //yellow
+    vec3 basefirst =  vec3(240./255., 67./255., 147./255.); //pink
+    // vec3 basefirst =  vec3(255./255., 96./255., 0./255.); //yellow
     vec3 accent =  vec3(20./255., 0., 38./255.);
     vec3 baseSecond =  vec3(36./255., 14./255., 139./255.);
     // vec3 baseThird = vec3(232./255., 201./255., 73./255.);
 
-    vec2 baseUV = rotate2d(n)*vPosition.xy*0.1;
+    vec2 baseUV = rotate2d(n)*vPosition.xy*0.1; //частота линий. их больше но они сжимаются
     float basePattern = lines(baseUV, 0.);
     float secondPattern = lines(baseUV, 0.5);
 

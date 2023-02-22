@@ -5,9 +5,9 @@ varying float vReflectionFactor;
 void main() {
 
   float mRefractionRatio = 1.02 ;
-  float mFresnelBias = 0.1;
-  float mFresnelScale = 2.;
-  float mFresnelPower = 1.;
+  float mFresnelBias = 0.9;
+  float mFresnelScale = 1.;
+  float mFresnelPower = 1.5;
 
   vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
   vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
