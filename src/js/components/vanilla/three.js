@@ -22,15 +22,9 @@ export default (element) => {
     const columns = range(-7.5, 7.5, 2.5);
     const rows = range(-7.5, 7.5, 2.5);
 
+
     // Scene
     const scene = new THREE.Scene();
-
-    const mainRenderTarget = new THREE.WebGLRenderTarget(sizes.width, sizes.height, {
-        minFilter: THREE.LinearFilter,
-        magFilter: THREE.NearestFilter,
-        format: THREE.RGBAFormat,
-        encoding: THREE.sRGBEncoding,
-    });
 
 
     let renderer, camera, controls, material, mesh, geometry, invader;
@@ -238,17 +232,20 @@ export default (element) => {
 
 
         if(invader) {
-            invader.visible = false;
-            renderer.setRenderTarget(mainRenderTarget);
-            // Render
+            
+
             renderer.render(scene, camera);
     
-            // Pass the texture data to our shader material
-            invader.material.uniforms.uTexture.value = mainRenderTarget.texture;
+            invader.traverse(function (child) {
+                if (child.isMesh) {
+                    child.material.uniforms.uTexture.value = mainRenderTarget.texture;
+                }
+            });
+   
     
-            renderer.setRenderTarget(null);
+   
             // Show the mesh
-            invader.visible = true;
+            // invader.visible = true;
         }
 
 
