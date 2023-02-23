@@ -7,8 +7,7 @@ import * as VanillaFactory from 'models/utils/vanilla-factory';
 // Define async components
 const asyncComponents = [
     'three',
-    'header',
-    'works',
+    'monopo',
 ];
 
 // Register async components

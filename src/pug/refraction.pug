@@ -1,0 +1,23 @@
+extends /_includes/layout
+
+block title
+    title Lab — Gosha Khidzhakadze
+
+    -
+        const pageData = {
+            navigation: {
+                title: 'ENVMAP Animation <br> Noise Shader progress',
+            },
+
+        }
+
+block fixed
+    +navigation(pageData.navigation)
+
+
+block content
+    .scene(data-component='{"component": "monopo"}')
+        canvas.scene__canvas.js-scene
+
+
+
