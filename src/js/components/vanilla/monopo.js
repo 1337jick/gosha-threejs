@@ -3,6 +3,13 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import * as dat from 'lil-gui';
 
+import { DotScreenShader } from 'models/utils/dot-screen-shader';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
+
+
+
 import vertex from 'models/utils/shader/vertex.glsl';
 import fragment from 'models/utils/shader/fragment.glsl';
 import vertex1 from 'models/utils/shader/vertex1.glsl';
@@ -19,11 +26,20 @@ export default (element) => {
         height: window.innerHeight,
     };
 
+
+    const uniforms = {
+      mRefractionRatio: 1.02,
+      mFresnelBias: 0.1,
+      mFresnelPower: 2.0,
+      mFresnelScale: 1.0,
+  };
+
+
     // Scene
     const scene = new THREE.Scene();
+    let gui;
 
-
-    let renderer, camera, controls, material, materialSmall, geometry, geometrySmall, plane, planeSmall, cubeRenderTarget, cubeCamera;
+    let renderer, composer, camera, controls, material, materialSmall, geometry, geometrySmall, plane, planeSmall, cubeRenderTarget, cubeCamera;
 
     let time = 0;
 
@@ -33,12 +49,26 @@ export default (element) => {
         setRenderer();
         setLight();
         addObjects();
-        // addSettings();
+        addSettings();
+        initPost();
         tick();
     };
 
     function addSettings() {
         gui = new dat.GUI();
+
+        gui.add(uniforms, 'mRefractionRatio', 0, 2, 0.01).onChange((val) => {
+          materialSmall.uniforms.mRefractionRatio.value = val;
+        });
+        gui.add(uniforms, 'mFresnelBias', 0, 2, 0.01).onChange((val) => {
+          materialSmall.uniforms.mFresnelBias.value = val;
+        });
+        gui.add(uniforms, 'mFresnelScale', 0, 2, 0.01).onChange((val) => {
+          materialSmall.uniforms.mFresnelScale.value = val;
+        });
+        gui.add(uniforms, 'mFresnelPower', 0, 2, 0.01).onChange((val) => {
+          materialSmall.uniforms.mFresnelPower.value = val;
+        });
 
 }
 
@@ -86,6 +116,10 @@ export default (element) => {
             uniforms: {
                 time: { value: 0 },
                 tCube: { value: 0 },
+                mRefractionRatio: { value: uniforms.mRefractionRatio },
+                mFresnelBias: { value: uniforms.mFresnelBias },
+                mFresnelPower: { value: uniforms.mFresnelPower },
+                mFresnelScale: { value: uniforms.mFresnelScale },
                 resolution: { value: new THREE.Vector4 () },
             },
             // wireframe: true,
@@ -126,6 +160,7 @@ export default (element) => {
     function setCamera() {
         camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.01, 1000);
         controls = new OrbitControls(camera, canvas);
+
         camera.position.set(0,0, 1.3)
 
 
@@ -133,6 +168,7 @@ export default (element) => {
         scene.add(camera);
 
         controls.enableDamping = true;
+        controls.enableZoom = false;
     }
 
     function setRenderer() {
@@ -147,6 +183,23 @@ export default (element) => {
 
 
     }
+
+    function initPost() {
+      const renderScene = new RenderPass( scene, camera );
+
+      composer = new EffectComposer( renderer );
+      composer.addPass( renderScene );
+
+
+      const dotEffect = new ShaderPass( DotScreenShader );
+      // dotEffect.uniforms[ 'scale' ].value = 4;
+      composer.addPass( dotEffect );
+
+
+      // gui
+
+  }
+
 
     const tick = () => {
         // Update controls
@@ -163,7 +216,8 @@ export default (element) => {
         window.requestAnimationFrame(tick);
 
         // Render
-        renderer.render(scene, camera);
+        // renderer.render(scene, camera);
+        composer.render(scene, camera);
 
 
     };

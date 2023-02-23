@@ -56,7 +56,8 @@ void main() {
 
     
 
-    vec3 basefirst =  vec3(240./255., 67./255., 147./255.); //pink
+    vec3 basefirst =  vec3(88./255., 239./255., 105./255.); //green
+    // vec3 basefirst =  vec3(240./255., 67./255., 147./255.); //pink
     // vec3 basefirst =  vec3(255./255., 96./255., 0./255.); //yellow
     vec3 accent =  vec3(20./255., 0., 38./255.);
     vec3 baseSecond =  vec3(36./255., 14./255., 139./255.);

@@ -9,7 +9,7 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
-
+import { DotScreenShader } from 'models/utils/dot-screen-shader';
 import { RaysShader } from 'models/utils/rays-shader';
 
 export default (element) => {
@@ -221,8 +221,11 @@ export default (element) => {
 
 
         rayEffect = new ShaderPass( RaysShader );
-        // rayEffect.uniforms[ 'scale' ].value = 4;
         composer.addPass( rayEffect );
+
+
+        const dotEffect = new ShaderPass( DotScreenShader );
+        composer.addPass( dotEffect );
 
 
         // gui
@@ -258,6 +261,7 @@ export default (element) => {
     function setControls() {
         // Controls
         controls.enableDamping = true;
+        controls.enableZoom = false;
         // controls.target.set(0, 0.8, 0 );
     }
 
