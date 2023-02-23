@@ -1,133 +1,28 @@
 .footer {
     $block: &;
 
-    background-color: $color-black;
-    color: $color-white;
-    padding: 0 0 toRem(40);
-    min-height: calc(100vh - 120px);
+    position: fixed;
+    bottom: 0;
+    
+    width: 100%;
+    padding: 30px 50px;
     display: flex;
-    align-items: end;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+    transition: $transition-link;
 
-    @include mq($until: tablet) {
-        padding: toRem(150) 0;
-        margin-top: toRem(-10);
-    }
 
-    .container {
-        opacity: 0;
-        margin: auto auto 0 auto;
-    }
-
-    &__head {
+    &__links {
         display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-
-        @include mq($until: tablet) {
-            flex-direction: column;
-            align-items: center;
-        }
-
-        &__title {
-            display: flex;
-            flex: 2;
-
-            @include mq($until: tablet) {
-                margin-bottom: toRem(80);
-            }
-        }
-
-        &__contact {
-            display: flex;
-            flex: 1;
-
-            &__link {
-                height: fit-content;
-                transition: $transition-link;
-                cursor: pointer;
-                margin: 0;
-                padding: 0;
-                letter-spacing: 0.05em;
-                line-height: 1;
-
-                @include mq($until: tablet) {
-                    font-weight: 700;
-                    padding: toRem(22) 0;
-                    margin: 0 0 toRem(5);
-                }
-
-                .no-touch &:hover {
-                    opacity: 0.66;
-                }
-            }
-        }
-
-        &__links {
-            height: fit-content;
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-            line-height: 1;
-
-            @include mq($until: tablet) {
-                align-items: center;
-            }
-
-            &__item {
-                transition: $transition-link;
-                cursor: pointer;
-                letter-spacing: 0.05em;
-
-                @include mq($until: tablet) {
-                    font-weight: 700;
-                }
-
-                .no-touch &:hover {
-                    opacity: 0.66;
-                }
-
-                &__wrapper {
-                    margin: 0;
-                    padding: 0;
-                    @include mq($until: tablet) {
-                        margin: toRem(5) 0;
-                        padding: toRem(22) 0;
-                    }
-                }
-
-                &__wrapper--middle {
-                    padding: 0;
-                    margin: toRem(40) 0;
-
-                    @include mq($until: tablet) {
-                        padding: toRem(22) 0;
-                        margin: toRem(5) 0;
-                    }
-                }
-            }
-        }
-    }
-
-    &__socials {
-        display: flex;
-        margin-top: toRem(260);
-        justify-content: flex-start;
-
-        @include mq($until: tablet) {
-            justify-content: center;
-            margin-top: toRem(80);
-        }
-
+        align-items: center;
         &__item {
-            color: $color-white;
-            font-size: 20px;
-            padding: 20px;
             cursor: pointer;
-            transition: $transition-link;
-
-            .no-touch &:hover {
-                opacity: 0.66;
-            }
+            padding: 6px 16px;
+            color: $color-white;
+            margin: 0 6px;
         }
     }
+ 
+
 }

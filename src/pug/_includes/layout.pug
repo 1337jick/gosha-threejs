@@ -20,6 +20,21 @@ html(lang=__.lang, class="no-js")
 
         -
             const data = {
+                footer: {
+                    title: 'Gosha Khidzhakadze <br> © 2023',
+
+                    links: [
+                        {
+                            label: 'Envmap Animation',
+                            href: '/'
+                        },
+                        {
+                            label: 'Noise Refraction',
+                            href: '/refraction'
+                        },
+
+                    ]
+                }
             }
 
         .page
@@ -27,14 +42,11 @@ html(lang=__.lang, class="no-js")
             //- specific page fixed content
             block fixed 
 
-            //- smooth scroll
-            #smooth-wrapper
-                #smooth-content
-                    //- specific page main content
-                    block content
-                        span no content provied
+
+            //- specific page main content
+            block content
+                span no content provied
                     
-                    //- footer
-                    block footer
-                        +footer()
+            //- footer
+            +footer(data.footer)
         include scripts

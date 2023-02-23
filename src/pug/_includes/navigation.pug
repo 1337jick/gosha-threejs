@@ -1,10 +1,10 @@
 mixin navigation(data)
     nav.navigation.js-navigation
-        .navigation__logo.copy.white!= data.logo
+        .navigation__logo.copy.white!= data.title
 
         .navigation__links
             each link in data.links ? data.links : ['There are no values']
-                .navigation__links__item.copy= link.label
+                a.navigation__links__item.copy(href=link.href target='_self')= link.label
            
                
 

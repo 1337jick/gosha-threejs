@@ -1,6 +1,10 @@
 mixin footer(data)
-    footer.footer
-        .container
-            .footer__head
-                
+    nav.footer.js-footer
+        .footer__logo.copy.white!= data.title
+
+        .footer__links
+            each link in data.links ? data.links : ['There are no values']
+                a.footer__links__item.copy(href=link.href target='_self')= link.label
+           
+               
 

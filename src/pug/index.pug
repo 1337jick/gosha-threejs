@@ -1,60 +1,23 @@
 extends /_includes/layout
 
 block title
-    title ????/// Creative Dev
+    title Lab — Gosha Khidzhakadze
 
     -
         const pageData = {
             navigation: {
-                logo: 'Gosha<br>Khidzhakadze',
-                links: [
-                    {
-                        label: 'about',
-                        href: '#about'
-                    },
-                    {
-                        label: 'stack',
-                        href: '#stack'
-                    },
-                    {
-                        label: 'projects',
-                        href: '#projects'
-                    },
-                ]
-            },
-            header: {
-                title: 'GOSHA'
+                title: 'ENVMAP Animation <br> Noise Shader progress',
             },
 
-            works: [
-                {
-                    image: 'assets/images/struct.jpg',
-                    title: 'Struct finance',
-                    link: {
-                        href: "#",
-                        label: "Launch Site",
-                        target: "_blank",
-                    }
-
-                }
-            ]
         }
 
 block fixed
     +navigation(pageData.navigation)
 
-    .scene(data-component='{"component": "three"}')
-        canvas.scene__canvas.js-scene
-        //- .scene__title__container
-        //-     .u-line
-        //-         .u-line-content.js-header__intro__container
-        //-             +headline({tag: "h1", class: "h1 scene__title js-header__intro"}, 'WELCOME TO MY WORLD')
-
 
 block content
-    //- +header(pageData.header)
-    //- +works(pageData.works)
-
+    .scene(data-component='{"component": "three"}')
+        canvas.scene__canvas.js-scene
 
 
 

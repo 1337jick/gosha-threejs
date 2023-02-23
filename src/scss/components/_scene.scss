@@ -8,13 +8,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: fixed;
-  z-index: 100;
 
-  canvas {
-    z-index: 100;
-    
-  }
+
+
 
   &__title {
     font-size: 14.5vw;

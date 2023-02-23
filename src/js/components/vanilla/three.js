@@ -83,9 +83,6 @@ export default (element) => {
             renderer.toneMappingExposure = params.exposure;
         });        
 
-
-
-        addCameraGui();
     }
 
     function addObjects() {
@@ -174,42 +171,9 @@ export default (element) => {
                     );
                     human.material.userData.shader = shader;
 
-
-                    initGsap();
                 };
 
-                // add sets to gui
-                gui.add(human.position, 'x', -2, 2, 0.01)
-                    .onChange((val) => {
-                        human.position.x = val;
-                    })
-                    .name('Model Position X');
-                gui.add(human.position, 'y', -2, 2, 0.01)
-                    .onChange((val) => {
-                        human.position.y = val;
-                    })
-                    .name('Model Position Y');
-                gui.add(human.position, 'z', -2, 2, 0.01)
-                    .onChange((val) => {
-                        human.position.z = val;
-                    })
-                    .name('Model Position Z');
-                gui.add(human.rotation, 'x', -2, 2, 0.01)
-                    .onChange((val) => {
-                        human.rotation.x = val;
-                    })
-                    .name('Model rotation X');
-                gui.add(human.rotation, 'y', -2, 2, 0.01)
-                    .onChange((val) => {
-                        human.rotation.y = val;
-                    })
-                    .name('Model rotation Y');
-                gui.add(human.rotation, 'z', -2, 2, 0.01)
-                    .onChange((val) => {
-                        human.rotation.z = val;
-                    })
-                    .name('Model rotation Z');
-
+         
 
                 gui.add(human.material, 'metalness', -2, 2, 0.01)
                     .onChange((val) => {
@@ -241,42 +205,8 @@ export default (element) => {
         });
     }
 
-    function addCameraGui() {
-        // camera
-        gui.add(camera.position, 'x', -5, 5, 0.01)
-            .onChange((val) => {
-                camera.position.x = val;
-                controls.update();
-            })
-            .name('Camera Position X');
-        gui.add(camera.position, 'y', -5, 5, 0.01)
-            .onChange((val) => {
-                camera.position.y = val;
-                controls.update();
-            })
-            .name('Camera Position Y');
-        gui.add(camera.position, 'z', -5, 5, 0.01)
-            .onChange((val) => {
-                camera.position.z = val;
-                controls.update();
-            })
-            .name('Camera Position Z');
-        gui.add(camera, 'zoom', -20, 20, 0.01)
-            .onChange((val) => {
-                camera.zoom = val;
-                camera.updateProjectionMatrix();
-            })
-            .name('Camera Zoom');
 
-    }
 
-    function initGsap() {
-        const scene = gsap.timeline();
-
-        const cameraScene = cameraTimeline();
-        scene.add(cameraScene);
-
-    }
 
     function initPost() {
         const renderScene = new RenderPass( scene, camera );
@@ -320,8 +250,8 @@ export default (element) => {
     }
 
     function setCamera() {
-        camera.position.set(0.57, 1.07, 0.94);
-        camera.zoom = 16;
+        camera.position.set(-1.2, 0, 0);
+        camera.zoom = 5;
         camera.updateProjectionMatrix();
         scene.add(camera);
     }
@@ -338,58 +268,12 @@ export default (element) => {
         // renderer.shadowMap.enabled = true;
         // renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         renderer.setSize(sizes.width, sizes.height);
+        renderer.setClearColor(0x000000);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     }
 
 
-    function cameraTimeline() {
-        const tl = gsap.timeline();
 
-        tl.to(camera.position, {
-            scrollTrigger: {
-                trigger: '.js-header',
-                start: () => `top top`,
-                end: () => `+=${window.innerHeight*3}`,
-                scrub: true,
-                invalidateOnRefresh: true,
-                
-            },
-            x: -1,
-            y: 0,
-            z: 0,
-        });
-        tl.to(camera, {
-            scrollTrigger: {
-                trigger: '.js-header',
-                start: () => `top+=1000 top`,
-                end: () => `+=${window.innerHeight*2}`,
-                scrub: true,
-                invalidateOnRefresh: true,
-                
-            },
-            zoom: 5,
-
-            onUpdate: () => {
-	
-                camera.updateProjectionMatrix();
-            
-            }
-        });
-
-        tl.to(human.position, {
-            scrollTrigger: {
-                trigger: '.js-header',
-                start: () => `top top-=${window.innerHeight * 3 + 100}`,
-                end: () => `+=${window.innerHeight}`,
-                scrub: true,
-                invalidateOnRefresh: true,
-                
-            },
-            y: -0.4,
-        });
-
-        return tl;
-    }
 
     const tick = () => {
         // Update controls

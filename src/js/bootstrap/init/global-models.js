@@ -8,6 +8,6 @@ import inView from 'models/in-view';
 addGlobalEventListeners();
 initBreakpointWatching();
 initOverlaySystem();
-smoothScroll();
+// smoothScroll();
 checkForTouch();
 inView();
